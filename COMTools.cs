@@ -411,7 +411,7 @@ namespace DotNetARX
     /// </summary>
     public static class Preferences
     {
-        //获取Preferences对象(COM类）
+        // 获取Preferences对象(COM类）
         static Type AcadPreferences = Type.GetTypeFromHandle(Type.GetTypeHandle(Application.Preferences));  
       
         /// <summary>
@@ -424,11 +424,11 @@ namespace DotNetARX
         {
             try
             {
-                //通过后期绑定的方式调用Preferences对象的ProjectName属性
+                // 通过后期绑定的方式调用Preferences对象的ProjectName属性
                 object obj = AcadPreferences.InvokeMember(ProjectName, BindingFlags.GetProperty, null, Application.Preferences, new object[0]);
-                //获取ProjectName属性对应的COM类
+                // 获取ProjectName属性对应的COM类
                 Type AcadPreferencesUnknown = Type.GetTypeFromHandle(Type.GetTypeHandle(obj));
-                //获取ProjectName属性对应的COM类的PropertyName属性
+                // 获取ProjectName属性对应的COM类的PropertyName属性
                 return (object)AcadPreferencesUnknown.InvokeMember(PropertyName, BindingFlags.GetProperty, null, obj, new object[0]);
             }
             catch

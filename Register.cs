@@ -44,7 +44,7 @@ namespace DotNetARX
         {
             // 获取当前用户的注册表键值
             RegistryKey hive = Registry.CurrentUser;
-            //打开AutoCAD的注册表键值
+            // 打开AutoCAD的注册表键值
             RegistryKey ack = hive.OpenSubKey("Software\\Autodesk\\AutoCAD");
             using (ack)
             {
@@ -98,16 +98,16 @@ namespace DotNetARX
             RegistryKey keyCurrentUser = Registry.CurrentUser;
             // 打开AutoCAD所属的注册表键:HKEY_CURRENT_USER\Software\Autodesk\AutoCAD
             RegistryKey keyAutoCAD = keyCurrentUser.OpenSubKey("Software\\Autodesk\\AutoCAD");
-            //获得表示当前的AutoCAD版本的注册表键值:R18.2
+            // 获得表示当前的AutoCAD版本的注册表键值:R18.2
             string valueCurAutoCAD = keyAutoCAD.GetValue("CurVer").ToString();
-            if (valueCurAutoCAD == null) return "";//如果未安装AutoCAD，则返回
-            //获取当前的AutoCAD版本的注册表键:HKEY_LOCAL_MACHINE\Software\Autodesk\AutoCAD\R18.2
+            if (valueCurAutoCAD == null) return "";// 如果未安装AutoCAD，则返回
+            // 获取当前的AutoCAD版本的注册表键:HKEY_LOCAL_MACHINE\Software\Autodesk\AutoCAD\R18.2
             RegistryKey keyCurAutoCAD = keyAutoCAD.OpenSubKey(valueCurAutoCAD);
-            //获取表示AutoCAD当前语言的注册表键值:ACAD-a001:804
+            // 获取表示AutoCAD当前语言的注册表键值:ACAD-a001:804
             string language = keyCurAutoCAD.GetValue("CurVer").ToString();
-            //获取AutoCAD当前语言的注册表键:HKEY_LOCAL_MACHINE\Software\Autodesk\AutoCAD\R18.2\ACAD-a001:804
+            // 获取AutoCAD当前语言的注册表键:HKEY_LOCAL_MACHINE\Software\Autodesk\AutoCAD\R18.2\ACAD-a001:804
             RegistryKey keyLanguage = keyCurAutoCAD.OpenSubKey(language);
-            //返回去除HKEY_LOCAL_MACHINE前缀的当前AutoCAD注册表项的键名:Software\Autodesk\AutoCAD\R18.2\ACAD-a001:804
+            // 返回去除HKEY_LOCAL_MACHINE前缀的当前AutoCAD注册表项的键名:Software\Autodesk\AutoCAD\R18.2\ACAD-a001:804
             return keyLanguage.Name.Substring(keyCurrentUser.Name.Length + 1);
         }
 
@@ -123,23 +123,23 @@ namespace DotNetARX
         /// <returns>如果创建注册表项成功则返回true,否则返回false</returns>
         public static bool CreateDemandLoadingEntries(string appName, string appDesc, string appPath, bool currentUser, bool overwrite, int flagLOADCTRLS)
         {
-            //获取AutoCAD所属的注册表键名
+            // 获取AutoCAD所属的注册表键名
             var autoCADKeyName = GetAutoCADKeyName();
-            //确定是HKEY_CURRENT_USER还是HKEY_LOCAL_MACHINE
+            // 确定是HKEY_CURRENT_USER还是HKEY_LOCAL_MACHINE
             RegistryKey keyRoot = currentUser ? Registry.CurrentUser : Registry.LocalMachine;
             // 由于某些AutoCAD版本的HKEY_CURRENT_USER可能不包括Applications键值，因此要创建该键值
             // 如果已经存在该鍵，无须担心可能的覆盖操作问题，因为CreateSubKey函数会以写的方式打开它而不会执行覆盖操作
             RegistryKey keyApp = keyRoot.CreateSubKey(autoCADKeyName + "\\" + "Applications");
-            //若存在同名的程序且选择不覆盖则返回
+            // 若存在同名的程序且选择不覆盖则返回
             if (!overwrite && keyApp.GetSubKeyNames().Contains(appName))
                 return false;
-            //创建相应的键并设置自动加载应用程序的选项
+            // 创建相应的键并设置自动加载应用程序的选项
             RegistryKey keyUserApp = keyApp.CreateSubKey(appName);
             keyUserApp.SetValue("DESCRIPTION", appName, RegistryValueKind.String);
             keyUserApp.SetValue("LOADCTRLS", flagLOADCTRLS, RegistryValueKind.DWord);
             keyUserApp.SetValue("LOADER", appPath, RegistryValueKind.String);
             keyUserApp.SetValue("MANAGED", 1, RegistryValueKind.DWord);
-            return true;//创建键成功则返回
+            return true;// 创建键成功则返回
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace DotNetARX
                 RegistryKey keyRoot = currentUser ? Registry.CurrentUser : Registry.LocalMachine;
                 // 以写的方式打开Applications注册表键
                 RegistryKey keyApp = keyRoot.OpenSubKey(cadName + "\\" + "Applications", true);
-                //删除指定名称的注册表键
+                // 删除指定名称的注册表键
                 keyApp.DeleteSubKeyTree(appName);
             }
             catch

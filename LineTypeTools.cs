@@ -43,20 +43,21 @@ namespace DotNetARX
         /// <returns>返回新建线型的Id</returns>
         public static ObjectId AddLineType(this Database db, string typeName)
         {
-            //打开线型表
-            LinetypeTable lt = (LinetypeTable)db.LinetypeTableId.GetObject(OpenMode.ForRead);
-            if (!lt.Has(typeName)) //如果存在名为typeName的线型表记录
+            // 打开线型表
+            LinetypeTable table = (LinetypeTable)db.LinetypeTableId.GetObject(OpenMode.ForRead);
+            if (!table.Has(typeName)) // 如果存在名为typeName的线型表记录
             {
-                lt.UpgradeOpen(); //切换线型表为写
-                //新建一个线型表记录
-                LinetypeTableRecord ltr = new LinetypeTableRecord();
-                ltr.Name = typeName; //设置线型表记录的名称
-                lt.Add(ltr); //将新的线型表记录的信息添加到的线型表中
-                db.TransactionManager.AddNewlyCreatedDBObject(ltr, true);
-                lt.DowngradeOpen(); //为了安全，将线型表的状态切换为读
+                table.UpgradeOpen(); // 切换线型表为写
+                // 新建一个线型表记录
+                LinetypeTableRecord record = new LinetypeTableRecord();
+                record.Name = typeName; // 设置线型表记录的名称
+                
+                table.Add(record); // 将新的线型表记录的信息添加到的线型表中
+                db.TransactionManager.AddNewlyCreatedDBObject(record, true);
+                table.DowngradeOpen(); // 为了安全，将线型表的状态切换为读
             }
 
-            return lt[typeName]; //返回新添加的线型表记录的ObjectId
+            return table[typeName]; // 返回新添加的线型表记录的ObjectId
         }
 
         /// <summary>
@@ -67,15 +68,15 @@ namespace DotNetARX
         /// <returns>返回装载的线型的Id</returns>
         public static ObjectId LoadLineType(this Database db, string typeName)
         {
-            //打开线型表
-            LinetypeTable lt = (LinetypeTable)db.LinetypeTableId.GetObject(OpenMode.ForRead);
-            if (!lt.Has(typeName)) //如果不存在名为typeName的线型
+            // 打开线型表
+            LinetypeTable table = (LinetypeTable)db.LinetypeTableId.GetObject(OpenMode.ForRead);
+            if (!table.Has(typeName)) // 如果不存在名为typeName的线型
             {
-                //加载typeName线型
+                // 加载typeName线型
                 db.LoadLineTypeFile(typeName, "acad.lin");
             }
 
-            return lt[typeName]; //返回加载的线型的ObjectId
+            return table[typeName]; // 返回加载的线型的ObjectId
         }
 
         /// <summary>
@@ -86,11 +87,11 @@ namespace DotNetARX
         public static void SetCurrentLineType(this Database db, string typeName)
         {
             var trans = db.TransactionManager;
-            //打开线型表
-            LinetypeTable lt = (LinetypeTable)trans.GetObject(db.LinetypeTableId, OpenMode.ForRead);
-            if (lt.Has(typeName)) //如果存在名为typeName的线型
+            // 打开线型表
+            LinetypeTable table = (LinetypeTable)trans.GetObject(db.LinetypeTableId, OpenMode.ForRead);
+            if (table.Has(typeName)) // 如果存在名为 typeName 的线型
             {
-                db.Celtype = lt[typeName]; //设置当前线型
+                db.Celtype = table[typeName]; // 设置当前线型
             }
         }
     }

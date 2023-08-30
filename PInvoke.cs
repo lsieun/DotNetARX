@@ -14,7 +14,7 @@ namespace DotNetARX
 
         private const uint LOAD_WITH_ALTERED_SEARCH_PATH = 0x00000008;
 
-        //允许托管代码不进行安全检查即调入非托管代码,从而提高程序的运行效率。只须在类内声明一次。
+        // 允许托管代码不进行安全检查即调入非托管代码,从而提高程序的运行效率。只须在类内声明一次。
         [SuppressUnmanagedCodeSecurity]
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr LoadLibraryEx(string lpFileName, IntPtr hFile, uint dwFlags);
@@ -51,7 +51,7 @@ namespace DotNetARX
             {
                 // 获取acdb**.dll的主版本号
                 string dllName = Register.GetACDBDLL_NAME();
-                switch (dllName) //根据主版本号确定acdb**.dll的具体名称
+                switch (dllName) // 根据主版本号确定acdb**.dll的具体名称
                 {
                     case "R17":
                         lpFileName = "acdb17.dll";

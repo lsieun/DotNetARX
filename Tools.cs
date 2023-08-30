@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
@@ -9,8 +11,6 @@ namespace DotNetARX
 {
     public static class Tools
     {
-        public static void test(){}
-        
         /// <summary>
         /// 将实体添加到模型空间
         /// </summary>
@@ -19,21 +19,21 @@ namespace DotNetARX
         /// <returns>返回添加到模型空间中的实体ObjectId</returns>
         public static ObjectId AddToModelSpace(this Database db, Entity entity)
         {
-            //定义一个指向当前数据库的事务处理，以添加直线
+            ObjectId entId; // 用于返回添加到模型空间中的实体ObjectId
+            // 定义一个指向当前数据库的事务处理，以添加直线
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
-                //以读方式打开块表
+                // 以读方式打开块表
                 BlockTable table = (BlockTable)trans.GetObject(db.BlockTableId, OpenMode.ForRead);
-                //以写方式打开模型空间块表记录.
-                BlockTableRecord tableRecord = (BlockTableRecord)trans.GetObject(
-                    table[BlockTableRecord.ModelSpace],
-                    OpenMode.ForWrite
-                );
-                ObjectId entityId = tableRecord.AppendEntity(entity); //将图形对象的信息添加到块表记录中
-                trans.AddNewlyCreatedDBObject(entity, true); //把对象添加到事务处理中
-                trans.Commit(); //提交事务处理
-                return entityId;
+                // 以写方式打开模型空间块表记录.
+                BlockTableRecord record =
+                    (BlockTableRecord)trans.GetObject(table[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
+                entId = record.AppendEntity(entity); // 将图形对象的信息添加到块表记录中
+                trans.AddNewlyCreatedDBObject(entity, true); // 把对象添加到事务处理中
+                trans.Commit(); // 提交事务处理
             }
+
+            return entId; // 返回实体的ObjectId
         }
 
         /// <summary>
@@ -44,30 +44,20 @@ namespace DotNetARX
         /// <returns>返回添加到模型空间中的实体ObjectId集合</returns>
         public static ObjectIdCollection AddToModelSpace(this Database db, params Entity[] entities)
         {
-            using (Transaction trans = db.TransactionManager.StartTransaction())
+            ObjectIdCollection ids = new ObjectIdCollection();
+            var trans = db.TransactionManager;
+            BlockTableRecord record =
+                (BlockTableRecord)trans.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(db), OpenMode.ForWrite);
+            foreach (var ent in entities)
             {
-                BlockTableRecord btr = (BlockTableRecord)trans.GetObject(
-                    SymbolUtilityServices.GetBlockModelSpaceId(db),
-                    OpenMode.ForWrite
-                );
-
-                ObjectIdCollection ids = new ObjectIdCollection();
-                foreach (var entity in entities)
-                {
-                    ObjectId id = btr.AppendEntity(entity);
-
-                    trans.AddNewlyCreatedDBObject(entity, true);
-
-                    ids.Add(id);
-                }
-                
-                btr.DowngradeOpen();
-                trans.Commit();
-                
-                return ids;
+                ids.Add(record.AppendEntity(ent));
+                trans.AddNewlyCreatedDBObject(ent, true);
             }
+
+            record.DowngradeOpen();
+            return ids;
         }
-        
+
         /// <summary>
         /// 判断字符串是否为数字
         /// </summary>
@@ -94,8 +84,8 @@ namespace DotNetARX
         /// <returns>返回当前.NET程序所在的目录</returns>
         public static string GetCurrentPath()
         {
-            var moudle=System.Reflection.Assembly.GetExecutingAssembly().GetModules()[0];
-            return System.IO.Path.GetDirectoryName(moudle.FullyQualifiedName);
+            var module = Assembly.GetExecutingAssembly().GetModules()[0];
+            return Path.GetDirectoryName(module.FullyQualifiedName);
         }
 
         /// <summary>
@@ -105,7 +95,10 @@ namespace DotNetARX
         /// <returns>如果字符串为空或空白，返回true，否则返回false</returns>
         public static bool IsNullOrWhiteSpace(this string value)
         {
-            if (value == null) return false;
+            if (value == null)
+            {
+                return false;
+            }
             return string.IsNullOrEmpty(value.Trim());
         }
 
@@ -137,11 +130,12 @@ namespace DotNetARX
         /// <returns>返回添加到图纸空间中的实体ObjectId</returns>
         public static ObjectId AddToPaperSpace(this Database db, Entity ent)
         {
-            var trans=db.TransactionManager;
-            BlockTableRecord btr=(BlockTableRecord)trans.GetObject(SymbolUtilityServices.GetBlockPaperSpaceId(db), OpenMode.ForWrite);
-            ObjectId id = btr.AppendEntity(ent);
+            var trans = db.TransactionManager;
+            BlockTableRecord record =
+                (BlockTableRecord)trans.GetObject(SymbolUtilityServices.GetBlockPaperSpaceId(db), OpenMode.ForWrite);
+            ObjectId id = record.AppendEntity(ent);
             trans.AddNewlyCreatedDBObject(ent, true);
-            btr.DowngradeOpen();
+            record.DowngradeOpen();
             return id;
         }
 
@@ -149,19 +143,21 @@ namespace DotNetARX
         /// 将实体添加到图纸空间
         /// </summary>
         /// <param name="db">数据库对象</param>
-        /// <param name="ents">要添加的多个实体</param>
+        /// <param name="entities">要添加的多个实体</param>
         /// <returns>返回添加到图纸空间中的实体ObjectId集合</returns>
-        public static ObjectIdCollection AddToPaperSpace(this Database db, params Entity[] ents)
+        public static ObjectIdCollection AddToPaperSpace(this Database db, params Entity[] entities)
         {
-            ObjectIdCollection ids=new ObjectIdCollection();
-            var trans=db.TransactionManager;
-            BlockTableRecord btr=(BlockTableRecord)trans.GetObject(SymbolUtilityServices.GetBlockPaperSpaceId(db), OpenMode.ForWrite);
-            foreach (var ent in ents)
+            ObjectIdCollection ids = new ObjectIdCollection();
+            var trans = db.TransactionManager;
+            BlockTableRecord record =
+                (BlockTableRecord)trans.GetObject(SymbolUtilityServices.GetBlockPaperSpaceId(db), OpenMode.ForWrite);
+            foreach (var ent in entities)
             {
-                ids.Add(btr.AppendEntity(ent));
+                ids.Add(record.AppendEntity(ent));
                 trans.AddNewlyCreatedDBObject(ent, true);
             }
-            btr.DowngradeOpen();
+
+            record.DowngradeOpen();
             return ids;
         }
 
@@ -173,11 +169,11 @@ namespace DotNetARX
         /// <returns>返回添加到当前空间中的实体ObjectId</returns>
         public static ObjectId AddToCurrentSpace(this Database db, Entity ent)
         {
-            var trans=db.TransactionManager;
-            BlockTableRecord btr=(BlockTableRecord)trans.GetObject(db.CurrentSpaceId, OpenMode.ForWrite);
-            ObjectId id = btr.AppendEntity(ent);
+            var trans = db.TransactionManager;
+            BlockTableRecord record = (BlockTableRecord)trans.GetObject(db.CurrentSpaceId, OpenMode.ForWrite);
+            ObjectId id = record.AppendEntity(ent);
             trans.AddNewlyCreatedDBObject(ent, true);
-            btr.DowngradeOpen();
+            record.DowngradeOpen();
             return id;
         }
 
@@ -189,15 +185,16 @@ namespace DotNetARX
         /// <returns>返回添加到当前空间中的实体ObjectId集合</returns>
         public static ObjectIdCollection AddToCurrentSpace(this Database db, params Entity[] ents)
         {
-            ObjectIdCollection ids=new ObjectIdCollection();
-            var trans=db.TransactionManager;
-            BlockTableRecord btr=(BlockTableRecord)trans.GetObject(db.CurrentSpaceId, OpenMode.ForWrite);
+            ObjectIdCollection ids = new ObjectIdCollection();
+            var trans = db.TransactionManager;
+            BlockTableRecord record = (BlockTableRecord)trans.GetObject(db.CurrentSpaceId, OpenMode.ForWrite);
             foreach (var ent in ents)
             {
-                ids.Add(btr.AppendEntity(ent));
+                ids.Add(record.AppendEntity(ent));
                 trans.AddNewlyCreatedDBObject(ent, true);
             }
-            btr.DowngradeOpen();
+
+            record.DowngradeOpen();
             return ids;
         }
 
@@ -209,8 +206,8 @@ namespace DotNetARX
         /// <returns>返回实体的ObjectId</returns>
         public static ObjectId HandleToObjectId(this Database db, string handleString)
         {
-            Handle handle=new Handle(Convert.ToInt64(handleString, 16));
-            ObjectId id=db.GetObjectId(false, handle, 0);
+            Handle handle = new Handle(Convert.ToInt64(handleString, 16));
+            ObjectId id = db.GetObjectId(false, handle, 0);
             return id;
         }
 
@@ -221,10 +218,10 @@ namespace DotNetARX
         public static void HighlightEntities(this ObjectIdCollection ids)
         {
             if (ids.Count == 0) return;
-            var trans=ids[0].Database.TransactionManager;
+            var trans = ids[0].Database.TransactionManager;
             foreach (ObjectId id in ids)
             {
-                Entity ent=trans.GetObject(id, OpenMode.ForRead) as Entity;
+                Entity ent = trans.GetObject(id, OpenMode.ForRead) as Entity;
                 if (ent != null)
                 {
                     ent.Highlight();
@@ -238,8 +235,12 @@ namespace DotNetARX
         /// <param name="selectionSet">选择集</param>
         public static void HighlightEntities(this SelectionSet selectionSet)
         {
-            if (selectionSet == null) return;
-            ObjectIdCollection ids=new ObjectIdCollection(selectionSet.GetObjectIds());
+            if (selectionSet == null)
+            {
+                return;
+            }
+
+            ObjectIdCollection ids = new ObjectIdCollection(selectionSet.GetObjectIds());
             ids.HighlightEntities();
         }
 
@@ -249,11 +250,15 @@ namespace DotNetARX
         /// <param name="ids">实体的Id集合</param>
         public static void UnHighlightEntities(this ObjectIdCollection ids)
         {
-            if (ids.Count == 0) return;
-            var trans=ids[0].Database.TransactionManager;
+            if (ids.Count == 0)
+            {
+                return;
+            }
+
+            var trans = ids[0].Database.TransactionManager;
             foreach (ObjectId id in ids)
             {
-                Entity ent=trans.GetObject(id, OpenMode.ForRead) as Entity;
+                Entity ent = trans.GetObject(id, OpenMode.ForRead) as Entity;
                 if (ent != null)
                 {
                     ent.Unhighlight();
@@ -268,10 +273,11 @@ namespace DotNetARX
         /// <returns>返回对应的Point3d</returns>
         public static Point3d StringToPoint3d(this string stringPoint)
         {
-            string[] strPoint=stringPoint.Trim().Split(new char[] { '(', ',', ')' }, StringSplitOptions.RemoveEmptyEntries);
-            double x=Convert.ToDouble(strPoint[0]);
-            double y=Convert.ToDouble(strPoint[1]);
-            double z=Convert.ToDouble(strPoint[2]);
+            string[] strPoint = stringPoint.Trim()
+                .Split(new char[] { '(', ',', ')' }, StringSplitOptions.RemoveEmptyEntries);
+            double x = Convert.ToDouble(strPoint[0]);
+            double y = Convert.ToDouble(strPoint[1]);
+            double z = Convert.ToDouble(strPoint[2]);
             return new Point3d(x, y, z);
         }
 

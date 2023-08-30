@@ -33,11 +33,11 @@ namespace DotNetARX
         /// </summary>
         /// <param name="point">给定点</param>
         /// <param name="angle">角度</param>
-        /// <param name="dist">距离</param>
+        /// <param name="distance">距离</param>
         /// <returns>返回与给定点指定角度和距离的点</returns>
-        public static Point3d PolarPoint(this Point3d point, double angle, double dist)
+        public static Point3d PolarPoint(this Point3d point, double angle, double distance)
         {
-            return new Point3d(point.X + dist * Math.Cos(angle), point.Y + dist * Math.Sin(angle), point.Z);
+            return new Point3d(point.X + distance * Math.Cos(angle), point.Y + distance * Math.Sin(angle), point.Z);
         }
 
         /// <summary>
@@ -63,9 +63,9 @@ namespace DotNetARX
         /// <returns>返回两点所确定的矢量与X轴正方向的夹角</returns>
         public static double AngleFromXAxis(this Point3d pt1, Point3d pt2)
         {
-            //构建一个从第一点到第二点所确定的矢量
+            // 构建一个从第一点到第二点所确定的矢量
             Vector2d vector = new Vector2d(pt1.X - pt2.X, pt1.Y - pt2.Y);
-            //返回该矢量和X轴正半轴的角度（弧度）
+            // 返回该矢量和X轴正半轴的角度（弧度）
             return vector.Angle;
         }
     }

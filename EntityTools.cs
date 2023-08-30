@@ -14,14 +14,14 @@ namespace DotNetARX
         /// <param name="targetPoint">移动的目标点</param>
         public static void Move(this ObjectId id, Point3d sourcePoint, Point3d targetPoint)
         {
-            //构建用于移动实体的矩阵
+            // 构建用于移动实体的矩阵
             Vector3d vector = targetPoint.GetVectorTo(sourcePoint);
             Matrix3d transform = Matrix3d.Displacement(vector);
 
-            //以写的方式打开id表示的实体对象
+            // 以写的方式打开id表示的实体对象
             Entity entity = (Entity)id.GetObject(OpenMode.ForWrite);
-            entity.TransformBy(transform); //对实体实施移动
-            entity.DowngradeOpen(); //为防止错误，切换实体为读的状态
+            entity.TransformBy(transform); // 对实体实施移动
+            entity.DowngradeOpen(); // 为防止错误，切换实体为读的状态
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DotNetARX
                 // 构建用于移动实体的矩阵
                 Vector3d vector = targetPoint.GetVectorTo(sourcePoint);
                 Matrix3d transform = Matrix3d.Displacement(vector);
-                entity.TransformBy(transform); //对实体实施移动
+                entity.TransformBy(transform); // 对实体实施移动
             }
             else // 如果是已经添加到数据库中的实体
             {
@@ -55,18 +55,18 @@ namespace DotNetARX
         /// <returns>返回复制实体的ObjectId</returns>
         public static ObjectId Copy(this ObjectId id, Point3d sourcePoint, Point3d targetPoint)
         {
-            //构建用于复制实体的矩阵
+            // 构建用于复制实体的矩阵
             Vector3d vector = targetPoint.GetVectorTo(sourcePoint);
             Matrix3d transform = Matrix3d.Displacement(vector);
 
-            //获取id表示的实体对象
+            // 获取id表示的实体对象
             Entity entity = (Entity)id.GetObject(OpenMode.ForRead);
-            //获取实体的拷贝
+            // 获取实体的拷贝
             Entity entityCopy = entity.GetTransformedCopy(transform);
 
-            //将复制的实体对象添加到模型空间
+            // 将复制的实体对象添加到模型空间
             ObjectId copyId = id.Database.AddToModelSpace(entityCopy);
-            return copyId; //返回复制实体的ObjectId
+            return copyId; // 返回复制实体的ObjectId
         }
 
         /// <summary>
@@ -81,13 +81,13 @@ namespace DotNetARX
             ObjectId copyId;
             if (entity.IsNewObject) // 如果是还未被添加到数据库中的新实体
             {
-                //构建用于复制实体的矩阵
+                // 构建用于复制实体的矩阵
                 Vector3d vector = targetPoint.GetVectorTo(sourcePoint);
                 Matrix3d transform = Matrix3d.Displacement(vector);
 
-                //获取实体的拷贝
+                // 获取实体的拷贝
                 Entity entCopy = entity.GetTransformedCopy(transform);
-                //将复制的实体对象添加到模型空间
+                // 将复制的实体对象添加到模型空间
                 copyId = entity.Database.AddToModelSpace(entCopy);
             }
             else
@@ -176,18 +176,18 @@ namespace DotNetARX
             Point3d mirrorPoint1, Point3d mirrorPoint2,
             bool eraseSourceObject)
         {
-            Line3d mirrorLine = new Line3d(mirrorPoint1, mirrorPoint2); //镜像线
-            Matrix3d transform = Matrix3d.Mirroring(mirrorLine); //镜像矩阵
+            Line3d mirrorLine = new Line3d(mirrorPoint1, mirrorPoint2); // 镜像线
+            Matrix3d transform = Matrix3d.Mirroring(mirrorLine); // 镜像矩阵
 
             ObjectId mirrorId = id;
             Entity entity = (Entity)id.GetObject(OpenMode.ForWrite);
 
-            //如果删除源对象，则直接对源对象实行镜像变换
+            // 如果删除源对象，则直接对源对象实行镜像变换
             if (eraseSourceObject)
             {
                 entity.TransformBy(transform);
             }
-            else //如果不删除源对象，则镜像复制源对象
+            else // 如果不删除源对象，则镜像复制源对象
             {
                 Entity entityCopy = entity.GetTransformedCopy(transform);
                 mirrorId = id.Database.AddToModelSpace(entityCopy);
@@ -208,18 +208,18 @@ namespace DotNetARX
             Point3d mirrorPoint1, Point3d mirrorPoint2,
             bool eraseSourceObject)
         {
-            Line3d mirrorLine = new Line3d(mirrorPoint1, mirrorPoint2); //镜像线
-            Matrix3d transform = Matrix3d.Mirroring(mirrorLine); //镜像矩阵
+            Line3d mirrorLine = new Line3d(mirrorPoint1, mirrorPoint2); // 镜像线
+            Matrix3d transform = Matrix3d.Mirroring(mirrorLine); // 镜像矩阵
 
             ObjectId mirrorId = ObjectId.Null;
             if (entity.IsNewObject)
             {
-                //如果删除源对象，则直接对源对象实行镜像变换
+                // 如果删除源对象，则直接对源对象实行镜像变换
                 if (eraseSourceObject)
                 {
                     entity.TransformBy(transform);
                 }
-                else //如果不删除源对象，则镜像复制源对象
+                else // 如果不删除源对象，则镜像复制源对象
                 {
                     Entity entCopy = entity.GetTransformedCopy(transform);
                     mirrorId = entity.Database.AddToModelSpace(entCopy);
@@ -247,12 +247,12 @@ namespace DotNetARX
             {
                 try
                 {
-                    //获取偏移的对象集合
+                    // 获取偏移的对象集合
                     DBObjectCollection offsetCurves = cur.GetOffsetCurves(distance);
-                    //将对象集合类型转换为实体类的数组，以方便加入实体的操作
+                    // 将对象集合类型转换为实体类的数组，以方便加入实体的操作
                     Entity[] entities = new Entity[offsetCurves.Count];
                     offsetCurves.CopyTo(entities, 0);
-                    //将偏移的对象加入到数据库
+                    // 将偏移的对象加入到数据库
                     ids = id.Database.AddToModelSpace(entities);
                 }
                 catch
@@ -265,7 +265,7 @@ namespace DotNetARX
                 Application.ShowAlertDialog("无法偏移！");
             }
 
-            return ids; //返回偏移后的实体Id集合
+            return ids; // 返回偏移后的实体Id集合
         }
 
         /// <summary>
@@ -375,10 +375,10 @@ namespace DotNetARX
             Extents3d totalExt = new Extents3d();
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
-                BlockTable bt = (BlockTable)trans.GetObject(db.BlockTableId, OpenMode.ForRead);
-                BlockTableRecord btRcd =
-                    (BlockTableRecord)trans.GetObject(bt[BlockTableRecord.ModelSpace], OpenMode.ForRead);
-                foreach (ObjectId entId in btRcd)
+                BlockTable table = (BlockTable)trans.GetObject(db.BlockTableId, OpenMode.ForRead);
+                BlockTableRecord record =
+                    (BlockTableRecord)trans.GetObject(table[BlockTableRecord.ModelSpace], OpenMode.ForRead);
+                foreach (ObjectId entId in record)
                 {
                     Entity ent = trans.GetObject(entId, OpenMode.ForRead) as Entity;
                     totalExt.AddExtents(ent.GeometricExtents);

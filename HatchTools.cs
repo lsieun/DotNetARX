@@ -67,7 +67,7 @@ namespace DotNetARX
         [DllImport("acad.exe", EntryPoint = "?acedHatchPalletteDialog@@YA_NPB_W_NAAPA_W@Z", CharSet = CharSet.Auto)]
         static extern bool acedHatchPalletteDialog(string currentPattern, bool showCustom, out IntPtr newPattern);
 
-        private string pattern; //用于存储用户选择的填充图案名称
+        private string pattern; // 用于存储用户选择的填充图案名称
 
         /// <summary>
         /// 是否显示自定义标签
@@ -88,7 +88,7 @@ namespace DotNetARX
         /// </summary>
         public HatchPalletteDialog()
         {
-            ShowCustom = true; //显示自定义标签
+            ShowCustom = true; // 显示自定义标签
         }
 
         /// <summary>
@@ -97,11 +97,11 @@ namespace DotNetARX
         /// <returns>如果用户选择了填充图案，则返回true，否则返回false</returns>
         public bool ShowDialog()
         {
-            IntPtr ptr; //用户选择的
-            //显示填充图案选项板
+            IntPtr ptr; // 用户选择的
+            // 显示填充图案选项板
             bool isOK = acedHatchPalletteDialog(HatchTools.CurrentPattern, ShowCustom, out ptr);
-            if (!isOK) return false; //如果用户未选择填充图案，返回false
-            //用户选择了填充图案，通过指针获得图案名称并将其置为当前名称
+            if (!isOK) return false; // 如果用户未选择填充图案，返回false
+            // 用户选择了填充图案，通过指针获得图案名称并将其置为当前名称
             pattern = HatchTools.CurrentPattern = Marshal.PtrToStringAuto(ptr);
             return true;
         }
@@ -117,11 +117,11 @@ namespace DotNetARX
         /// </summary>
         public static string CurrentPattern
         {
-            //获取HPNAME系统变量值，它表示默认的填充图案名
+            // 获取HPNAME系统变量值，它表示默认的填充图案名
             get { return Application.GetSystemVariable("HPNAME").ToString(); }
             set
             {
-                //如果要设置的值符合填充图案名，则设置HPNAME系统变量值
+                // 如果要设置的值符合填充图案名，则设置HPNAME系统变量值
                 if (value.Length <= 34 && !value.Contains(" ") && !value.IsNullOrWhiteSpace() &&
                     value != CurrentPattern)
                     Application.SetSystemVariable("HPNAME", value);
@@ -140,15 +140,15 @@ namespace DotNetARX
             bool associative)
         {
             Database db = HostApplicationServices.WorkingDatabase;
-            hatch.SetDatabaseDefaults(); //设置填充的属性为当前数据库默认值
+            hatch.SetDatabaseDefaults(); // 设置填充的属性为当前数据库默认值
 
-            //设置填充的类型和填充图案名
+            // 设置填充的类型和填充图案名
             hatch.SetHatchPattern(patternType, patternName);
 
-            //将填充添加到模型空间
+            // 将填充添加到模型空间
             db.AddToModelSpace(hatch);
 
-            //设置填充与边界是否关联
+            // 设置填充与边界是否关联
             hatch.Associative = associative;
         }
 
@@ -172,7 +172,7 @@ namespace DotNetARX
             };
 
             Database db = HostApplicationServices.WorkingDatabase;
-            hatch.SetDatabaseDefaults(); //设置填充的默认值
+            hatch.SetDatabaseDefaults(); // 设置填充的默认值
 
             // 设置填充的类型为渐变色填充
             hatch.HatchObjectType = HatchObjectType.GradientObject;
@@ -186,7 +186,7 @@ namespace DotNetARX
 
             // 设置渐变色填充的起始和结束颜色
             hatch.SetGradientColors(new GradientColor[] { gColor1, gColor2 });
-            db.AddToModelSpace(hatch); //将填充添加到模型空间
+            db.AddToModelSpace(hatch); // 将填充添加到模型空间
 
             // 设置填充与边界是否关联
             hatch.Associative = associative ? true : false;
