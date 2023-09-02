@@ -48,13 +48,16 @@ namespace DotNetARX
             if (!table.Has(typeName)) // 如果存在名为typeName的线型表记录
             {
                 table.UpgradeOpen(); // 切换线型表为写
+
                 // 新建一个线型表记录
                 LinetypeTableRecord record = new LinetypeTableRecord();
                 record.Name = typeName; // 设置线型表记录的名称
-                
+
                 table.Add(record); // 将新的线型表记录的信息添加到的线型表中
                 db.TransactionManager.AddNewlyCreatedDBObject(record, true);
-                table.DowngradeOpen(); // 为了安全，将线型表的状态切换为读
+
+                // 为了安全，将线型表的状态切换为读
+                table.DowngradeOpen();
             }
 
             return table[typeName]; // 返回新添加的线型表记录的ObjectId
@@ -72,7 +75,7 @@ namespace DotNetARX
             LinetypeTable table = (LinetypeTable)db.LinetypeTableId.GetObject(OpenMode.ForRead);
             if (!table.Has(typeName)) // 如果不存在名为typeName的线型
             {
-                // 加载typeName线型
+                // 加载 typeName 线型
                 db.LoadLineTypeFile(typeName, "acad.lin");
             }
 

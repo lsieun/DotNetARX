@@ -41,9 +41,9 @@ namespace DotNetARX
         /// <returns>返回当前活动视口的Id</returns>
         public static ObjectId CurrentViewportTableRecordId(this Database db)
         {
-            ObjectId vtrId=ObjectId.Null;
-            ViewportTable vt=(ViewportTable)db.ViewportTableId.GetObject(OpenMode.ForRead);
-            foreach (ObjectId id in vt)
+            ObjectId vtrId = ObjectId.Null;
+            ViewportTable table = (ViewportTable)db.ViewportTableId.GetObject(OpenMode.ForRead);
+            foreach (ObjectId id in table)
             {
                 if (!id.IsErased)
                 {
@@ -51,6 +51,7 @@ namespace DotNetARX
                     break;
                 }
             }
+
             return vtrId;
         }
     }

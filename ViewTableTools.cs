@@ -6,7 +6,7 @@ using Autodesk.AutoCAD.Geometry;
 
 namespace DotNetARX
 {
-/// <summary>
+    /// <summary>
     /// 视图操作类
     /// </summary>
     public static class ViewTableTools
@@ -24,7 +24,7 @@ namespace DotNetARX
             mat = Matrix3d.Displacement(vtr.Target - Point3d.Origin) * mat;
             // 将旋转过的视口或视图回复到原始状态所需要的矩阵
             mat = Matrix3d.Rotation(-vtr.ViewTwist, vtr.ViewDirection, vtr.Target) * mat;
-            return mat.Inverse();// 将矩阵进行转置
+            return mat.Inverse(); // 将矩阵进行转置
         }
 
         /// <summary>
@@ -68,6 +68,7 @@ namespace DotNetARX
                     }
                 }
             }
+
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
                 ViewTableRecord view = ed.GetCurrentView();
@@ -77,10 +78,12 @@ namespace DotNetARX
                     ptMin = new Point3d(ptCenter.X - view.Width / 2, ptCenter.Y - view.Height / 2, 0);
                     ptMax = new Point3d(ptCenter.X + view.Width / 2, ptCenter.Y + view.Height / 2, 0);
                 }
+
                 using (Line line = new Line(ptMin, ptMax))
                 {
                     extents = new Extents3d(line.GeometricExtents.MinPoint, line.GeometricExtents.MaxPoint);
                 }
+
                 double viewRatio = view.Width / view.Height;
                 extents.TransformBy(matWCS2DCS);
                 double width, height;
@@ -93,20 +96,24 @@ namespace DotNetARX
                     {
                         ptCenter = ptCenter.TransformBy(matWCS2DCS);
                     }
+
                     newCenter = new Point2d(ptCenter.X, ptCenter.Y);
                 }
                 else
                 {
                     width = extents.MaxPoint.X - extents.MinPoint.X;
                     height = extents.MaxPoint.Y - extents.MinPoint.Y;
-                    newCenter = new Point2d((extents.MaxPoint.X + extents.MinPoint.X) * 0.5, (extents.MaxPoint.Y + extents.MinPoint.Y) * 0.5);
+                    newCenter = new Point2d((extents.MaxPoint.X + extents.MinPoint.X) * 0.5,
+                        (extents.MaxPoint.Y + extents.MinPoint.Y) * 0.5);
                 }
+
                 if (width > height * viewRatio) height = width / viewRatio;
                 if (factor != 0)
                 {
                     view.Height = height * factor;
                     view.Width = width * factor;
                 }
+
                 view.CenterPoint = newCenter;
                 ed.SetCurrentView(view);
                 trans.Commit();
@@ -122,10 +129,12 @@ namespace DotNetARX
         {
             // 得到当前视图
             ViewTableRecord view = ed.GetCurrentView();
+
             // 修改视图的宽度和高度
             view.Width /= scale;
             view.Height /= scale;
-            ed.SetCurrentView(view);// 更新当前视图
+
+            ed.SetCurrentView(view); // 更新当前视图
         }
 
         /// <summary>
@@ -141,16 +150,20 @@ namespace DotNetARX
             {
                 // 获取两点表示的范围
                 Extents3d extents = new Extents3d(line.GeometricExtents.MinPoint, line.GeometricExtents.MaxPoint);
+
                 // 获取范围内的最小值点及最大值点
                 Point2d minPt = new Point2d(extents.MinPoint.X, extents.MinPoint.Y);
                 Point2d maxPt = new Point2d(extents.MaxPoint.X, extents.MaxPoint.Y);
+
                 // 得到当前视图
                 ViewTableRecord view = ed.GetCurrentView();
+
                 // 设置视图的中心点、高度和宽度
                 view.CenterPoint = minPt + (maxPt - minPt) / 2;
                 view.Height = maxPt.Y - minPt.Y;
                 view.Width = maxPt.X - minPt.X;
-                ed.SetCurrentView(view);// 更新当前视图
+
+                ed.SetCurrentView(view); // 更新当前视图
             }
         }
 
@@ -161,7 +174,8 @@ namespace DotNetARX
         public static void ZoomExtents(this Editor ed)
         {
             Database db = ed.Document.Database;
-            db.UpdateExt(true);// 更新当前模型空间的范围
+            db.UpdateExt(true); // 更新当前模型空间的范围
+
             // 根据当前图形的界限范围对视图进行缩放
             if (db.Extmax.X < db.Extmin.X)
             {
@@ -188,7 +202,11 @@ namespace DotNetARX
             {
                 // 获取实体对象
                 Entity ent = trans.GetObject(entId, OpenMode.ForRead) as Entity;
-                if (ent == null) return;
+                if (ent == null)
+                {
+                    return;
+                }
+
                 // 根据实体的范围对视图进行缩放
                 Extents3d ext = ent.GeometricExtents;
                 ext.TransformBy(ed.CurrentUserCoordinateSystem.Inverse());

@@ -81,21 +81,23 @@ namespace DotNetARX
         {
             var trans = db.TransactionManager;
             // 打开UCS表
-            UcsTable ut = (UcsTable)trans.GetObject(db.UcsTableId, OpenMode.ForRead);
-            if (!ut.Has(UCSName)) // 如果不存在名为UCSName的UCS，则新建一个UCS
+            UcsTable table = (UcsTable)trans.GetObject(db.UcsTableId, OpenMode.ForRead);
+            if (!table.Has(UCSName)) // 如果不存在名为UCSName的UCS，则新建一个UCS
             {
                 // 定义一个新的UCS
-                UcsTableRecord utr = new UcsTableRecord();
-                utr.Name = UCSName; // 设置UCS名
-                ut.UpgradeOpen(); // 切换UCS表的状态为写以添加新的UCS
+                UcsTableRecord record = new UcsTableRecord();
+                record.Name = UCSName; // 设置UCS名
+
+                table.UpgradeOpen(); // 切换UCS表的状态为写以添加新的UCS
                 // 将UCS的信息添加到UCS表中
-                ut.Add(utr);
+                table.Add(record);
+
                 // 把UCS添加到事务处理中
-                trans.AddNewlyCreatedDBObject(utr, true);
-                ut.DowngradeOpen(); // 为了安全，将UCS表的状态切换为读
+                trans.AddNewlyCreatedDBObject(record, true);
+                table.DowngradeOpen(); // 为了安全，将UCS表的状态切换为读
             }
 
-            return ut[UCSName]; // 返回新添加的UCS的ObjectId
+            return table[UCSName]; // 返回新添加的UCS的ObjectId
         }
 
         /// <summary>
@@ -109,15 +111,24 @@ namespace DotNetARX
             var trans = db.TransactionManager;
             Editor ed = db.GetEditor();
             // 打开UCS表
-            UcsTable ut = (UcsTable)trans.GetObject(db.UcsTableId, OpenMode.ForRead);
+            UcsTable table = (UcsTable)trans.GetObject(db.UcsTableId, OpenMode.ForRead);
             // 如果不存在名为UCSName的UCS，则返回
-            if (!ut.Has(UCSName)) return false;
+            if (!table.Has(UCSName))
+            {
+                return false;
+            }
+
             // 打开当前活动的视口为写的状态
-            ViewportTableRecord vtr =
+            ViewportTableRecord record =
                 (ViewportTableRecord)trans.GetObject(db.CurrentViewportTableRecordId(), OpenMode.ForWrite);
+
+            // 对于 2009 以上的版本
+            // ViewportTableRecord record = (ViewportTableRecord)trans.GetObject(ed.ActiveViewportId, OpenMode.ForWrite);
+
             // 设置当前UCS
-            vtr.SetUcs(ut[UCSName]);
-            vtr.DowngradeOpen();
+            record.SetUcs(table[UCSName]);
+            record.DowngradeOpen();
+
             // 更新视口
             ed.UpdateTiledViewportsFromDatabase();
             return true;
@@ -132,13 +143,15 @@ namespace DotNetARX
         {
             var trans = db.TransactionManager;
             Editor ed = db.GetEditor();
+
             // 打开UCS表
-            UcsTable ut = (UcsTable)trans.GetObject(db.UcsTableId, OpenMode.ForRead);
+            UcsTable table = (UcsTable)trans.GetObject(db.UcsTableId, OpenMode.ForRead);
             // 打开当前活动的视口
-            ViewportTableRecord vtr =
+            ViewportTableRecord record =
                 (ViewportTableRecord)trans.GetObject(db.CurrentViewportTableRecordId(), OpenMode.ForRead);
+
             // 返回当前UCS的ObjectId
-            return vtr.UcsName;
+            return record.UcsName;
         }
 
         /// <summary>
@@ -150,12 +163,18 @@ namespace DotNetARX
         {
             Database db = ucsId.Database;
             var trans = db.TransactionManager;
+
             // 打开UCS
-            UcsTableRecord utr = trans.GetObject(ucsId, OpenMode.ForRead) as UcsTableRecord;
-            if (utr == null) return; // 若UCS不存在，则返回
-            utr.UpgradeOpen(); // 切换UCS为写的状态
-            utr.Origin = pt; // 设置UCS的原点
-            utr.DowngradeOpen(); // 为了安全，切换UCS为读的状态
+            UcsTableRecord record = trans.GetObject(ucsId, OpenMode.ForRead) as UcsTableRecord;
+            if (record == null)
+            {
+                // 若UCS不存在，则返回
+                return;
+            }
+
+            record.UpgradeOpen(); // 切换UCS为写的状态
+            record.Origin = pt; // 设置UCS的原点
+            record.DowngradeOpen(); // 为了安全，切换UCS为读的状态
         }
 
         /// <summary>
@@ -168,16 +187,23 @@ namespace DotNetARX
         {
             Database db = ucsId.Database;
             var trans = db.TransactionManager;
+
             // 打开UCS
-            UcsTableRecord utr = trans.GetObject(ucsId, OpenMode.ForRead) as UcsTableRecord;
-            if (utr == null) return; // 若UCS不存在，则返回
-            utr.UpgradeOpen(); // 切换UCS为写的状态
-            Vector3d xAxis = utr.XAxis; // UCS的X轴方向
-            Vector3d yAxis = utr.YAxis; // UCS的Y轴方向
+            UcsTableRecord record = trans.GetObject(ucsId, OpenMode.ForRead) as UcsTableRecord;
+            if (record == null)
+            {
+                // 若UCS不存在，则返回
+                return;
+            }
+
+            record.UpgradeOpen(); // 切换UCS为写的状态
+            Vector3d xAxis = record.XAxis; // UCS的X轴方向
+            Vector3d yAxis = record.YAxis; // UCS的Y轴方向
+            
             // 旋转UCS
-            utr.XAxis = xAxis.RotateBy(rotateAngle * Math.PI / 180, rotateAxis);
-            utr.YAxis = yAxis.RotateBy(rotateAngle * Math.PI / 180, rotateAxis);
-            utr.DowngradeOpen(); // 为了安全，切换UCS为读的状态
+            record.XAxis = xAxis.RotateBy(rotateAngle * Math.PI / 180, rotateAxis);
+            record.YAxis = yAxis.RotateBy(rotateAngle * Math.PI / 180, rotateAxis);
+            record.DowngradeOpen(); // 为了安全，切换UCS为读的状态
         }
     }
 }
