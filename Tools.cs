@@ -16,24 +16,29 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="entity">要添加的实体</param>
-        /// <returns>返回添加到模型空间中的实体ObjectId</returns>
+        /// <returns>返回添加到模型空间中的实体 ObjectId</returns>
         public static ObjectId AddToModelSpace(this Database db, Entity entity)
         {
-            ObjectId entId; // 用于返回添加到模型空间中的实体ObjectId
             // 定义一个指向当前数据库的事务处理，以添加直线
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
                 // 以读方式打开块表
                 BlockTable table = (BlockTable)trans.GetObject(db.BlockTableId, OpenMode.ForRead);
+
                 // 以写方式打开模型空间块表记录.
                 BlockTableRecord record =
-                    (BlockTableRecord)trans.GetObject(table[BlockTableRecord.ModelSpace], OpenMode.ForWrite);
-                entId = record.AppendEntity(entity); // 将图形对象的信息添加到块表记录中
+                    (BlockTableRecord)trans.GetObject(
+                        table[BlockTableRecord.ModelSpace],
+                        OpenMode.ForWrite
+                    );
+
+
+                ObjectId entityId = record.AppendEntity(entity); // 将图形对象的信息添加到块表记录中
                 trans.AddNewlyCreatedDBObject(entity, true); // 把对象添加到事务处理中
                 trans.Commit(); // 提交事务处理
-            }
 
-            return entId; // 返回实体的ObjectId
+                return entityId;
+            }
         }
 
         /// <summary>
@@ -41,13 +46,16 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="entities">要添加的多个实体</param>
-        /// <returns>返回添加到模型空间中的实体ObjectId集合</returns>
+        /// <returns>返回添加到模型空间中的实体 ObjectId 集合</returns>
         public static ObjectIdCollection AddToModelSpace(this Database db, params Entity[] entities)
         {
-            ObjectIdCollection ids = new ObjectIdCollection();
             var trans = db.TransactionManager;
-            BlockTableRecord record =
-                (BlockTableRecord)trans.GetObject(SymbolUtilityServices.GetBlockModelSpaceId(db), OpenMode.ForWrite);
+            BlockTableRecord record = (BlockTableRecord)trans.GetObject(
+                SymbolUtilityServices.GetBlockModelSpaceId(db),
+                OpenMode.ForWrite
+            );
+            
+            ObjectIdCollection ids = new ObjectIdCollection();
             foreach (var ent in entities)
             {
                 ids.Add(record.AppendEntity(ent));
@@ -62,7 +70,7 @@ namespace DotNetARX
         /// 判断字符串是否为数字
         /// </summary>
         /// <param name="value">字符串</param>
-        /// <returns>如果字符串为数字，返回true，否则返回false</returns>
+        /// <returns>如果字符串为数字，返回 true，否则返回 false</returns>
         public static bool IsNumeric(this string value)
         {
             return Regex.IsMatch(value, @"^[+-]?\d*[.]?\d*$");
@@ -72,16 +80,16 @@ namespace DotNetARX
         /// 判断字符串是否为整数
         /// </summary>
         /// <param name="value">字符串</param>
-        /// <returns>如果字符串为整数，返回true，否则返回false</returns>
+        /// <returns>如果字符串为整数，返回 true，否则返回 false</returns>
         public static bool IsInt(this string value)
         {
             return Regex.IsMatch(value, @"^[+-]?\d*$");
         }
 
         /// <summary>
-        /// 获取当前.NET程序所在的目录
+        /// 获取当前.NET 程序所在的目录
         /// </summary>
-        /// <returns>返回当前.NET程序所在的目录</returns>
+        /// <returns>返回当前.NET 程序所在的目录</returns>
         public static string GetCurrentPath()
         {
             var module = Assembly.GetExecutingAssembly().GetModules()[0];
@@ -92,31 +100,32 @@ namespace DotNetARX
         /// 判断字符串是否为空或空白
         /// </summary>
         /// <param name="value">字符串</param>
-        /// <returns>如果字符串为空或空白，返回true，否则返回false</returns>
+        /// <returns>如果字符串为空或空白，返回 true，否则返回 false</returns>
         public static bool IsNullOrWhiteSpace(this string value)
         {
             if (value == null)
             {
                 return false;
             }
+
             return string.IsNullOrEmpty(value.Trim());
         }
 
         /// <summary>
-        /// 获取模型空间的ObjectId
+        /// 获取模型空间的 ObjectId
         /// </summary>
         /// <param name="db">数据库对象</param>
-        /// <returns>返回模型空间的ObjectId</returns>
+        /// <returns>返回模型空间的 ObjectId</returns>
         public static ObjectId GetModelSpaceId(this Database db)
         {
             return SymbolUtilityServices.GetBlockModelSpaceId(db);
         }
 
         /// <summary>
-        /// 获取图纸空间的ObjectId
+        /// 获取图纸空间的 ObjectId
         /// </summary>
         /// <param name="db"></param>
-        /// <returns>返回图纸空间的ObjectId</returns>
+        /// <returns>返回图纸空间的 ObjectId</returns>
         public static ObjectId GetPaperSpaceId(this Database db)
         {
             return SymbolUtilityServices.GetBlockPaperSpaceId(db);
@@ -127,7 +136,7 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="ent">要添加的实体</param>
-        /// <returns>返回添加到图纸空间中的实体ObjectId</returns>
+        /// <returns>返回添加到图纸空间中的实体 ObjectId</returns>
         public static ObjectId AddToPaperSpace(this Database db, Entity ent)
         {
             var trans = db.TransactionManager;
@@ -144,7 +153,7 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="entities">要添加的多个实体</param>
-        /// <returns>返回添加到图纸空间中的实体ObjectId集合</returns>
+        /// <returns>返回添加到图纸空间中的实体 ObjectId 集合</returns>
         public static ObjectIdCollection AddToPaperSpace(this Database db, params Entity[] entities)
         {
             ObjectIdCollection ids = new ObjectIdCollection();
@@ -166,7 +175,7 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="ent">要添加的实体</param>
-        /// <returns>返回添加到当前空间中的实体ObjectId</returns>
+        /// <returns>返回添加到当前空间中的实体 ObjectId</returns>
         public static ObjectId AddToCurrentSpace(this Database db, Entity ent)
         {
             var trans = db.TransactionManager;
@@ -182,7 +191,7 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="ents">要添加的多个实体</param>
-        /// <returns>返回添加到当前空间中的实体ObjectId集合</returns>
+        /// <returns>返回添加到当前空间中的实体 ObjectId 集合</returns>
         public static ObjectIdCollection AddToCurrentSpace(this Database db, params Entity[] ents)
         {
             ObjectIdCollection ids = new ObjectIdCollection();
@@ -199,11 +208,11 @@ namespace DotNetARX
         }
 
         /// <summary>
-        /// 将字符串形式的句柄转化为ObjectId
+        /// 将字符串形式的句柄转化为 ObjectId
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="handleString">句柄字符串</param>
-        /// <returns>返回实体的ObjectId</returns>
+        /// <returns>返回实体的 ObjectId</returns>
         public static ObjectId HandleToObjectId(this Database db, string handleString)
         {
             Handle handle = new Handle(Convert.ToInt64(handleString, 16));
@@ -214,7 +223,7 @@ namespace DotNetARX
         /// <summary>
         /// 亮显实体
         /// </summary>
-        /// <param name="ids">要亮显的实体的Id集合</param>
+        /// <param name="ids">要亮显的实体的 Id 集合</param>
         public static void HighlightEntities(this ObjectIdCollection ids)
         {
             if (ids.Count == 0) return;
@@ -247,7 +256,7 @@ namespace DotNetARX
         /// <summary>
         /// 取消亮显实体
         /// </summary>
-        /// <param name="ids">实体的Id集合</param>
+        /// <param name="ids">实体的 Id 集合</param>
         public static void UnHighlightEntities(this ObjectIdCollection ids)
         {
             if (ids.Count == 0)
@@ -267,10 +276,10 @@ namespace DotNetARX
         }
 
         /// <summary>
-        /// 将字符串格式的点转换为Point3d格式
+        /// 将字符串格式的点转换为 Point3d 格式
         /// </summary>
         /// <param name="stringPoint">字符串格式的点</param>
-        /// <returns>返回对应的Point3d</returns>
+        /// <returns>返回对应的 Point3d</returns>
         public static Point3d StringToPoint3d(this string stringPoint)
         {
             string[] strPoint = stringPoint.Trim()

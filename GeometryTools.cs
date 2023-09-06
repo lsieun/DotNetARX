@@ -56,16 +56,16 @@ namespace DotNetARX
         }
 
         /// <summary>
-        /// 计算从第一点到第二点所确定的矢量与X轴正方向的夹角
+        /// 计算从第一点到第二点所确定的矢量与 X 轴正方向的夹角
         /// </summary>
         /// <param name="pt1">第一点</param>
         /// <param name="pt2">第二点</param>
-        /// <returns>返回两点所确定的矢量与X轴正方向的夹角</returns>
+        /// <returns>返回两点所确定的矢量与 X 轴正方向的夹角</returns>
         public static double AngleFromXAxis(this Point3d pt1, Point3d pt2)
         {
             // 构建一个从第一点到第二点所确定的矢量
             Vector2d vector = new Vector2d(pt1.X - pt2.X, pt1.Y - pt2.Y);
-            // 返回该矢量和X轴正半轴的角度（弧度）
+            // 返回该矢量和 X 轴正半轴的角度（弧度）
             return vector.Angle;
         }
     }

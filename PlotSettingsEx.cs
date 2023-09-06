@@ -10,16 +10,17 @@ using Autodesk.AutoCAD.PlottingServices;
 
 namespace DotNetARX
 {
-/// <summary>
+    /// <summary>
     /// 增强型打印设置类，支持数据绑定
     /// </summary>
     public class PlotSettingsEx : PlotSettings, INotifyPropertyChanged
     {
-        #region INotifyPropertyChanged接口的实现
+        #region INotifyPropertyChanged 接口的实现
+
         /// <summary>
         /// 在更改属性值时发生的事件
         /// </summary>
-        public event PropertyChangedEventHandler  PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// 处理属性更改事件的函数
@@ -31,11 +32,12 @@ namespace DotNetARX
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
-        } 
+        }
+
         #endregion
 
         // 获取当前打印设置验证类
-        private PlotSettingsValidator validator=PlotSettingsValidator.Current;
+        private PlotSettingsValidator validator = PlotSettingsValidator.Current;
 
         /// <summary>
         /// 复制构造函数，从已有打印设置中获取打印设置
@@ -44,12 +46,13 @@ namespace DotNetARX
         public PlotSettingsEx(PlotSettings ps)
             : base(ps.ModelType)
         {
-            this.CopyFrom(ps);// 从已有打印设置中获取打印设置
+            this.CopyFrom(ps); // 从已有打印设置中获取打印设置
             // 更新打印设备、图纸尺寸和打印样式表信息
             validator.RefreshLists(this);
         }
 
         #region 覆盖基类属性
+
         /// <summary>
         /// 获取或设置当前图纸尺寸（中文表示）
         /// </summary>
@@ -58,15 +61,17 @@ namespace DotNetARX
             get
             {
                 // 将图纸尺寸从英文名改为中文名
-                string mediaLocal=base.CanonicalMediaName.Replace("_", " ").Replace("MM", "毫米").Replace("Inches", "英寸").Replace("Pixels", "像素");
-                return mediaLocal;// 返回中文名的图纸尺寸 
+                string mediaLocal = base.CanonicalMediaName.Replace("_", " ").Replace("MM", "毫米")
+                    .Replace("Inches", "英寸").Replace("Pixels", "像素");
+                return mediaLocal; // 返回中文名的图纸尺寸 
             }
             set
             {
-                if (value != CanonicalMediaName)// 如果图纸尺寸有变化
+                if (value != CanonicalMediaName) // 如果图纸尺寸有变化
                 {
                     // 将图纸尺寸从中文名改为英文名
-                    string mediaName=value.Replace(" ", "_").Replace("毫米", "MM").Replace("英寸", "Inches").Replace("像素", "Pixels");
+                    string mediaName = value.Replace(" ", "_").Replace("毫米", "MM").Replace("英寸", "Inches")
+                        .Replace("像素", "Pixels");
                     // 设置当前图纸尺寸
                     validator.SetCanonicalMediaName(this, mediaName);
                     // 向客户端发出某一属性值已更改的通知
@@ -74,6 +79,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置当前打印样式表
         /// </summary>
@@ -89,10 +95,12 @@ namespace DotNetARX
                         validator.SetCurrentStyleSheet(this, value);
                     }
                     else validator.SetCurrentStyleSheet(this, "");
+
                     NotifyPropertyChanged("CurrentStyleSheet");
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置自定义打印比例
         /// </summary>
@@ -108,6 +116,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置是否居中打印
         /// </summary>
@@ -123,6 +132,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置当前打印设备名称
         /// </summary>
@@ -138,6 +148,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置当前打印原点（原点是从图纸边界的介质边缘偏移而来的）。
         /// </summary>
@@ -153,6 +164,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置打印比例
         /// </summary>
@@ -168,6 +180,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置图形方向
         /// </summary>
@@ -183,6 +196,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置打印范围
         /// </summary>
@@ -198,6 +212,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置打印视口名
         /// </summary>
@@ -213,6 +228,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置打印窗口的范围
         /// </summary>
@@ -228,6 +244,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置当前标准比例（实数形式）
         /// </summary>
@@ -243,6 +260,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置当前标准比例（枚举形式）
         /// </summary>
@@ -258,6 +276,7 @@ namespace DotNetARX
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置是否选用标准比例
         /// </summary>
@@ -273,7 +292,9 @@ namespace DotNetARX
                 }
             }
         }
+
         #endregion
+
         /// <summary>
         /// 获取或设置当前图形单位
         /// </summary>
@@ -284,12 +305,13 @@ namespace DotNetARX
             {
                 if (value != Denominator)
                 {
-                    CustomScale newScale=new CustomScale(CustomPrintScale.Numerator, value);
+                    CustomScale newScale = new CustomScale(CustomPrintScale.Numerator, value);
                     validator.SetCustomPrintScale(this, newScale);
                     NotifyPropertyChanged("Denominator");
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置当前图纸单位
         /// </summary>
@@ -300,14 +322,15 @@ namespace DotNetARX
             {
                 if (value != Numerator)
                 {
-                    CustomScale newScale=new CustomScale(value, CustomPrintScale.Denominator);
+                    CustomScale newScale = new CustomScale(value, CustomPrintScale.Denominator);
                     validator.SetCustomPrintScale(this, newScale);
                     NotifyPropertyChanged("Numerator");
                 }
             }
         }
+
         /// <summary>
-        /// 获取或设置当前X方向的打印偏移
+        /// 获取或设置当前 X 方向的打印偏移
         /// </summary>
         public double PlotOriginX
         {
@@ -316,14 +339,15 @@ namespace DotNetARX
             {
                 if (value != PlotOriginX)
                 {
-                    Point2d newOrigin=new Point2d(value, PlotOrigin.Y);
+                    Point2d newOrigin = new Point2d(value, PlotOrigin.Y);
                     validator.SetPlotOrigin(this, newOrigin);
                     NotifyPropertyChanged("PlotOriginX");
                 }
             }
         }
+
         /// <summary>
-        /// 获取或设置当前Y方向的打印偏移
+        /// 获取或设置当前 Y 方向的打印偏移
         /// </summary>
         public double PlotOriginY
         {
@@ -332,12 +356,13 @@ namespace DotNetARX
             {
                 if (value != PlotOriginY)
                 {
-                    Point2d newOrigin=new Point2d(PlotOrigin.X, value);
+                    Point2d newOrigin = new Point2d(PlotOrigin.X, value);
                     validator.SetPlotOrigin(this, newOrigin);
                     NotifyPropertyChanged("PlotOriginY");
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置打印时是否布满图纸
         /// </summary>
@@ -359,10 +384,12 @@ namespace DotNetARX
                         validator.SetStdScaleType(this, StdScaleType.ScaleToFit);
                     }
                     else validator.SetUseStandardScale(this, false);
+
                     NotifyPropertyChanged("PlotExtent");
                 }
             }
         }
+
         /// <summary>
         /// 获取或设置是否反向打印
         /// </summary>
@@ -377,19 +404,22 @@ namespace DotNetARX
             {
                 if (value != PlotReverse)
                 {
-                    int numRotation=(int)PlotRotation;
+                    int numRotation = (int)PlotRotation;
                     if (value == true)
                     {
                         numRotation += 2;
                     }
                     else
                         numRotation -= 2;
+
                     validator.SetPlotRotation(this, (Autodesk.AutoCAD.DatabaseServices.PlotRotation)numRotation);
                     NotifyPropertyChanged("PlotReverse");
                 }
             }
         }
+
         #region 列表类属性
+
         /// <summary>
         /// 获取当前打印设备列表
         /// </summary>
@@ -397,15 +427,17 @@ namespace DotNetARX
         {
             get
             {
-                StringCollection deviceCollection=validator.GetPlotDeviceList();
-                List<string> deviceList=new List<string>();
+                StringCollection deviceCollection = validator.GetPlotDeviceList();
+                List<string> deviceList = new List<string>();
                 foreach (string device in deviceCollection)
                 {
                     deviceList.Add(device);
                 }
+
                 return deviceList;
             }
         }
+
         /// <summary>
         /// 获取当前图纸尺寸列表（中文表示）
         /// </summary>
@@ -413,16 +445,20 @@ namespace DotNetARX
         {
             get
             {
-                StringCollection mediaCollection=validator.GetCanonicalMediaNameList(this);
-                List<string> mediaList=new List<string>();
+                StringCollection mediaCollection = validator.GetCanonicalMediaNameList(this);
+                List<string> mediaList = new List<string>();
                 foreach (string media in mediaCollection)
                 {
-                    string mediaLocal=media.Replace("_", " ").Replace("MM", "毫米").Replace("Inches", "英寸").Replace("Pixels", "像素");
+                    string mediaLocal = media.Replace("_", " ").Replace("MM", "毫米").Replace("Inches", "英寸")
+                        .Replace("Pixels", "像素");
                     mediaList.Add(mediaLocal);
                 }
-                return mediaList; ;
+
+                return mediaList;
+                ;
             }
         }
+
         /// <summary>
         /// 获取当前打印范围列表（中文表示）
         /// </summary>
@@ -430,12 +466,13 @@ namespace DotNetARX
         {
             get
             {
-                if (ModelType)// 模型空间
+                if (ModelType) // 模型空间
                     return (new List<string> { "窗口", "图形界限", "显示" });
-                else// 图纸空间
+                else // 图纸空间
                     return (new List<string> { "布局", "窗口", "范围", "显示" });
             }
         }
+
         /// <summary>
         /// 获取当前打印单位列表（中文表示）
         /// </summary>
@@ -449,6 +486,7 @@ namespace DotNetARX
                     return (new List<string> { "毫米", "英寸" });
             }
         }
+
         /// <summary>
         /// 获取颜色相关打印样式列表
         /// </summary>
@@ -456,13 +494,14 @@ namespace DotNetARX
         {
             get
             {
-                List<string> styleSheetList=(from string style in validator.GetPlotStyleSheetList()
-                                             where style.EndsWith("ctb")
-                                             select style).ToList();
+                List<string> styleSheetList = (from string style in validator.GetPlotStyleSheetList()
+                    where style.EndsWith("ctb")
+                    select style).ToList();
                 styleSheetList.Insert(0, "无");
                 return styleSheetList;
             }
         }
+
         /// <summary>
         /// 获取命名打印样式列表
         /// </summary>
@@ -470,13 +509,14 @@ namespace DotNetARX
         {
             get
             {
-                List<string> styleSheetList=(from string style in validator.GetPlotStyleSheetList()
-                                             where style.EndsWith("stb")
-                                             select style).ToList();
+                List<string> styleSheetList = (from string style in validator.GetPlotStyleSheetList()
+                    where style.EndsWith("stb")
+                    select style).ToList();
                 styleSheetList.Insert(0, "无");
                 return styleSheetList;
             }
         }
+
         /// <summary>
         /// 获取标准打印比例列表
         /// </summary>
@@ -484,29 +524,36 @@ namespace DotNetARX
         {
             get
             {
-                var scaleTypeDict=new Dictionary<StdScaleType, string>();
-                List<string> scaleTypeList=new List<string>() 
+                var scaleTypeDict = new Dictionary<StdScaleType, string>();
+                List<string> scaleTypeList = new List<string>()
                 {
-                    "自定义","1/128'' = 1'-0''","1/64'' = 1'-0''","1/32'' = 1'-0''","1/16'' = 1'-0''","3/32'' = 1'-0''",
-                    "1/8'' = 1'-0''","3/16'' = 1'-0''","1/4'' = 1'-0''","3/8'' = 1'-0''","1/2'' = 1'-0''","3/4'' = 1'-0''",
-                    "1'' = 1'-0''","3'' = 1'-0''","6'' = 1'-0''","1'-0'''' = 1'-0''",
-                    "1:1","1:2","1:4","1:8","1:10","1:16","1:20","1:30","1:40","1:50","1:100",
-                    "2:1","4:1","8:1","10:1","100:1","1000:1"
+                    "自定义", "1/128'' = 1'-0''", "1/64'' = 1'-0''", "1/32'' = 1'-0''", "1/16'' = 1'-0''",
+                    "3/32'' = 1'-0''",
+                    "1/8'' = 1'-0''", "3/16'' = 1'-0''", "1/4'' = 1'-0''", "3/8'' = 1'-0''", "1/2'' = 1'-0''",
+                    "3/4'' = 1'-0''",
+                    "1'' = 1'-0''", "3'' = 1'-0''", "6'' = 1'-0''", "1'-0'''' = 1'-0''",
+                    "1:1", "1:2", "1:4", "1:8", "1:10", "1:16", "1:20", "1:30", "1:40", "1:50", "1:100",
+                    "2:1", "4:1", "8:1", "10:1", "100:1", "1000:1"
                 };
                 scaleTypeDict.Add(StdScaleType.ScaleToFit, scaleTypeList[0]);
                 for (int i = 16; i <= 32; i++)
                 {
                     scaleTypeDict.Add((StdScaleType)i, scaleTypeList[i]);
                 }
+
                 for (int i = 1; i < 16; i++)
                 {
                     scaleTypeDict.Add((StdScaleType)i, scaleTypeList[i]);
                 }
+
                 return scaleTypeDict;
             }
         }
+
         #endregion
+
         #region 中文属性
+
         /// <summary>
         /// 获取或设置打印范围（中文）
         /// </summary>
@@ -514,7 +561,7 @@ namespace DotNetARX
         {
             get
             {
-                string plotTypeLocal="";
+                string plotTypeLocal = "";
                 switch (base.PlotType)
                 {
                     case Autodesk.AutoCAD.DatabaseServices.PlotType.Display:
@@ -536,6 +583,7 @@ namespace DotNetARX
                         plotTypeLocal = "窗口";
                         break;
                 }
+
                 return plotTypeLocal;
             }
             set
@@ -563,6 +611,7 @@ namespace DotNetARX
                             PlotType = Autodesk.AutoCAD.DatabaseServices.PlotType.Window;
                             break;
                     }
+
                     NotifyPropertyChanged("PlotTypeLocal");
                 }
             }
@@ -575,13 +624,20 @@ namespace DotNetARX
         {
             get
             {
-                string plotUnitLocal="";
+                string plotUnitLocal = "";
                 switch (base.PlotPaperUnits)
                 {
-                    case PlotPaperUnit.Inches: plotUnitLocal = "英寸"; break;
-                    case PlotPaperUnit.Millimeters: plotUnitLocal = "毫米"; break;
-                    case PlotPaperUnit.Pixels: plotUnitLocal = "像素"; break;
+                    case PlotPaperUnit.Inches:
+                        plotUnitLocal = "英寸";
+                        break;
+                    case PlotPaperUnit.Millimeters:
+                        plotUnitLocal = "毫米";
+                        break;
+                    case PlotPaperUnit.Pixels:
+                        plotUnitLocal = "像素";
+                        break;
                 }
+
                 return plotUnitLocal;
             }
             set
@@ -590,10 +646,17 @@ namespace DotNetARX
                 {
                     switch (value)
                     {
-                        case "英寸": validator.SetPlotPaperUnits(this, PlotPaperUnit.Inches); break;
-                        case "毫米": validator.SetPlotPaperUnits(this, PlotPaperUnit.Millimeters); break;
-                        case "像素": validator.SetPlotPaperUnits(this, PlotPaperUnit.Pixels); break;
+                        case "英寸":
+                            validator.SetPlotPaperUnits(this, PlotPaperUnit.Inches);
+                            break;
+                        case "毫米":
+                            validator.SetPlotPaperUnits(this, PlotPaperUnit.Millimeters);
+                            break;
+                        case "像素":
+                            validator.SetPlotPaperUnits(this, PlotPaperUnit.Pixels);
+                            break;
                     }
+
                     NotifyPropertyChanged("PlotPaperUnitsLocal");
                 }
             }
@@ -614,14 +677,15 @@ namespace DotNetARX
             {
                 if (value != StdScaleTypeLocal)
                 {
-
-                    StdScaleType newScaleType=StdScaleTypeList.First(s => s.Value == value).Key;
+                    StdScaleType newScaleType = StdScaleTypeList.First(s => s.Value == value).Key;
                     validator.SetStdScaleType(this, newScaleType);
                     NotifyPropertyChanged("StdScaleTypeLocal");
                 }
             }
         }
+
         #endregion
+
         /// <summary>
         /// 是否打印到文件
         /// </summary>
@@ -632,10 +696,11 @@ namespace DotNetARX
                 // 如果未选择打印设备，则直接返回
                 if (PlotConfigurationName == "无") return false;
                 // 获取当前打印配置，并返回其是否打印到文件属性
-                PlotConfig config=PlotConfigManager.CurrentConfig;
+                PlotConfig config = PlotConfigManager.CurrentConfig;
                 return config.IsPlotToFile;
             }
         }
+
         /// <summary>
         /// 可以不打印到文件
         /// </summary>
@@ -646,12 +711,13 @@ namespace DotNetARX
                 // 如果未选择打印设备，则直接返回
                 if (PlotConfigurationName == "无") return false;
                 // 获取当前打印配置，并返回其是否必须打印到文件
-                PlotConfig config=PlotConfigManager.CurrentConfig;
+                PlotConfig config = PlotConfigManager.CurrentConfig;
                 if (config.PlotToFileCapability == PlotToFileCapability.MustPlotToFile)
                     return false;
                 else return true;
             }
         }
+
         /// <summary>
         /// 获取或设置是否横向打印
         /// </summary>
@@ -659,7 +725,8 @@ namespace DotNetARX
         {
             get
             {
-                if (base.PlotRotation == PlotRotation.Degrees090 || base.PlotRotation == PlotRotation.Degrees270) return true;
+                if (base.PlotRotation == PlotRotation.Degrees090 || base.PlotRotation == PlotRotation.Degrees270)
+                    return true;
                 else return false;
             }
             set
@@ -681,6 +748,7 @@ namespace DotNetARX
                             validator.SetPlotRotation(this, PlotRotation.Degrees000);
                     }
                 }
+
                 NotifyPropertyChanged("PlotHorizontal");
             }
         }
@@ -691,15 +759,16 @@ namespace DotNetARX
         /// <param name="psId">打印设置对象</param>
         public void UpdatePlotSettings(ObjectId psId)
         {
-            Document doc=Application.DocumentManager.MdiActiveDocument;
+            Document doc = Application.DocumentManager.MdiActiveDocument;
             using (doc.LockDocument())
             using (Transaction trans = doc.TransactionManager.StartTransaction())
             {
-                PlotSettings ps=psId.GetObject(OpenMode.ForWrite) as PlotSettings;
+                PlotSettings ps = psId.GetObject(OpenMode.ForWrite) as PlotSettings;
                 if (ps != null)
                 {
-                    ps.CopyFrom(this);// 复制当前打印设置
+                    ps.CopyFrom(this); // 复制当前打印设置
                 }
+
                 trans.Commit();
             }
         }

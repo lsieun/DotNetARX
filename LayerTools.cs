@@ -11,12 +11,12 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="layerName">图层名</param>
-        /// <returns>返回新建图层的ObjectId</returns>
+        /// <returns>返回新建图层的 ObjectId</returns>
         public static ObjectId AddLayer(this Database db, string layerName)
         {
             // 打开层表
             LayerTable table = (LayerTable)db.LayerTableId.GetObject(OpenMode.ForRead);
-            if (!table.Has(layerName)) // 如果不存在名为layerName的图层，则新建一个图层
+            if (!table.Has(layerName)) // 如果不存在名为 layerName 的图层，则新建一个图层
             {
                 // 定义一个新的层表记录
                 LayerTableRecord record = new LayerTableRecord
@@ -35,7 +35,7 @@ namespace DotNetARX
                 table.DowngradeOpen();
             }
 
-            return table[layerName]; // 返回新添加的层表记录的ObjectId
+            return table[layerName]; // 返回新添加的层表记录的 ObjectId
         }
 
         /// <summary>
@@ -44,21 +44,21 @@ namespace DotNetARX
         /// <param name="db">数据库对象</param>
         /// <param name="layerName">图层名</param>
         /// <param name="colorIndex">颜色索引</param>
-        /// <returns>如果成功设置图层颜色，则返回true，否则返回false</returns>
+        /// <returns>如果成功设置图层颜色，则返回 true，否则返回 false</returns>
         public static bool SetLayerColor(this Database db, string layerName, short colorIndex)
         {
             // 打开层表
             LayerTable table = (LayerTable)db.LayerTableId.GetObject(OpenMode.ForRead);
-            // 如果不存在名为layerName的图层，则返回
+            // 如果不存在名为 layerName 的图层，则返回
             if (!table.Has(layerName))
             {
                 return false;
             }
 
-            // 获取名为layerName的层表记录的Id
+            // 获取名为 layerName 的层表记录的 Id
             ObjectId layerId = table[layerName];
 
-            // 以写的方式打开名为layerName的层表记录
+            // 以写的方式打开名为 layerName 的层表记录
             LayerTableRecord record = (LayerTableRecord)layerId.GetObject(OpenMode.ForWrite);
             // 设置图层的颜色
             record.Color = Color.FromColorIndex(ColorMethod.ByAci, colorIndex);
@@ -71,18 +71,18 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="layerName">图层名</param>
-        /// <returns>如果设置成功，则返回ture</returns>
+        /// <returns>如果设置成功，则返回 ture</returns>
         public static bool SetCurrentLayer(this Database db, string layerName)
         {
             // 打开层表
             LayerTable table = (LayerTable)db.LayerTableId.GetObject(OpenMode.ForRead);
-            // 如果不存在名为layerName的图层，则返回
+            // 如果不存在名为 layerName 的图层，则返回
             if (!table.Has(layerName))
             {
                 return false;
             }
 
-            // 获取名为layerName的层表记录的Id
+            // 获取名为 layerName 的层表记录的 Id
             ObjectId layerId = table[layerName];
             // 如果指定的图层为当前层，则返回
             if (db.Clayer == layerId) return false;
@@ -116,31 +116,31 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="layerName">图层名</param>
-        /// <returns>如果删除成功，则返回true，否则返回false</returns>
+        /// <returns>如果删除成功，则返回 true，否则返回 false</returns>
         public static bool DeleteLayer(this Database db, string layerName)
         {
             // 打开层表
             LayerTable table = (LayerTable)db.LayerTableId.GetObject(OpenMode.ForRead);
-            // 如果层名为0或Defpoints，则返回（这两个图层不能删除）
+            // 如果层名为 0 或 Defpoints，则返回（这两个图层不能删除）
             if (layerName == "0" || layerName == "Defpoints")
             {
                 return false;
             }
 
-            // 如果不存在名为layerName的图层，则返回
+            // 如果不存在名为 layerName 的图层，则返回
             if (!table.Has(layerName))
             {
                 return false;
             }
 
-            ObjectId layerId = table[layerName]; // 获取名为layerName的层表记录的Id
+            ObjectId layerId = table[layerName]; // 获取名为 layerName 的层表记录的 Id
             // 如果要删除的图层为当前层，则返回（不能删除当前层）
             if (layerId == db.Clayer)
             {
                 return false;
             }
 
-            // 打开名为layerName的层表记录
+            // 打开名为 layerName 的层表记录
             LayerTableRecord record = (LayerTableRecord)layerId.GetObject(OpenMode.ForRead);
             // 如果要删除的图层包含对象或依赖外部参照，则返回（不能删除这些层）
             table.GenerateUsageData();
@@ -150,20 +150,20 @@ namespace DotNetARX
             }
 
             record.UpgradeOpen(); // 切换层表记录为写的状态
-            record.Erase(true); // 删除名为layerName的图层
+            record.Erase(true); // 删除名为 layerName 的图层
             return true; // 删除图层成功
         }
 
         /// <summary>
-        /// 获取所有图层的ObjectId
+        /// 获取所有图层的 ObjectId
         /// </summary>
         /// <param name="db">数据库对象</param>
-        /// <returns>返回所有图层的ObjectId</returns>
+        /// <returns>返回所有图层的 ObjectId</returns>
         public static List<ObjectId> GetAllLayerObjectIds(this Database db)
         {
             // 打开层表
             LayerTable table = (LayerTable)db.LayerTableId.GetObject(OpenMode.ForRead);
-            // 用于返回层表记录ObjectId的列表
+            // 用于返回层表记录 ObjectId 的列表
             List<ObjectId> objectIdList = new List<ObjectId>();
             // 遍历层表
             foreach (ObjectId id in table)
@@ -171,7 +171,7 @@ namespace DotNetARX
                 objectIdList.Add(id); // 添加到返回列表中
             }
 
-            return objectIdList; // 返回所有的层表记录的ObjectId
+            return objectIdList; // 返回所有的层表记录的 ObjectId
         }
     }
 }

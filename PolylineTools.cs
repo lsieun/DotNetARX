@@ -52,7 +52,7 @@ namespace DotNetARX
         /// <param name="pt2">矩形的角点</param>
         public static void CreateRectangle(this Polyline pline, Point2d pt1, Point2d pt2)
         {
-            // 设置矩形的4个顶点
+            // 设置矩形的 4 个顶点
             double minX = Math.Min(pt1.X, pt2.X);
             double maxX = Math.Max(pt1.X, pt2.X);
             double minY = Math.Min(pt1.Y, pt2.Y);

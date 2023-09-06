@@ -17,13 +17,13 @@ namespace DotNetARX
             // 椭圆的中心点
             Point3d center = GeometryTools.MidPoint(pt1, pt2);
             Vector3d normal = Vector3d.ZAxis; // 法向量
-            
-            // 椭圆1/2长轴的矢量，矢量的起点为椭圆的中心，终点为椭圆长轴的一个端点
+
+            // 椭圆 1/2 长轴的矢量，矢量的起点为椭圆的中心，终点为椭圆长轴的一个端点
             Vector3d majorAxis = new Vector3d(Math.Abs(pt1.X - pt2.X) / 2, 0, 0);
-            
+
             // 椭圆短轴与长轴的长度比例
             double ratio = Math.Abs((pt1.Y - pt2.Y) / (pt1.X - pt2.X));
-            
+
             // 设置椭圆的参数
             ellipse.Set(center, normal, majorAxis, ratio, 0, 2 * Math.PI);
         }

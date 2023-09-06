@@ -5,7 +5,7 @@ using Autodesk.AutoCAD.ApplicationServices;
 
 namespace DotNetARX
 {
-/// <summary>
+    /// <summary>
     /// 文字的字体样式
     /// </summary>
     public enum FontStyle
@@ -14,14 +14,17 @@ namespace DotNetARX
         /// 常规
         /// </summary>
         Regular,
+
         /// <summary>
         /// 斜体
         /// </summary>
         Italic,
+
         /// <summary>
         /// 加粗
         /// </summary>
         Bold,
+
         /// <summary>
         /// 加粗斜体
         /// </summary>
@@ -37,8 +40,9 @@ namespace DotNetARX
         /// 自动获取自动对齐点
         /// </summary>
         Automatic,
+
         /// <summary>
-        /// 用户必须使用shift键获取自动对齐点
+        /// 用户必须使用 shift 键获取自动对齐点
         /// </summary>
         ShiftToAcquire
     }
@@ -52,10 +56,12 @@ namespace DotNetARX
         /// 关闭按需加载
         /// </summary>
         Disabled,
+
         /// <summary>
         /// 在打开包含自定义对象的图形时按需加载源应用程序
         /// </summary>
         OnObjectDetect,
+
         /// <summary>
         /// 在调用应用程序的某个命令时按需加载源应用程序
         /// </summary>
@@ -71,10 +77,12 @@ namespace DotNetARX
         /// 关闭按需加载，加载整个参照图形
         /// </summary>
         Disabled,
+
         /// <summary>
-        /// 打开按需加载来提高AutoCAD性能
+        /// 打开按需加载来提高 AutoCAD 性能
         /// </summary>
         LoadEnabled,
+
         /// <summary>
         /// 打开按需加载但使用参照图形的临时副本
         /// </summary>
@@ -90,10 +98,12 @@ namespace DotNetARX
         /// 不显示代理对象
         /// </summary>
         NotShow,
+
         /// <summary>
         /// 显示所有代理对象的图形图像
         /// </summary>
         Show,
+
         /// <summary>
         /// 仅显示所有代理对象的边框
         /// </summary>
@@ -109,58 +119,72 @@ namespace DotNetARX
         /// AutoCAD R14 DWG (*.dwg)
         /// </summary>
         acR14_dwg = 8,
+
         /// <summary>
         /// AutoCAD 2000 DWG (*.dwg)
         /// </summary>
         ac2000_dwg = 12,
+
         /// <summary>
         /// AutoCAD 2000 DXF (*.dxf)
         /// </summary>
         ac2000_dxf = 13,
+
         /// <summary>
         /// AutoCAD 2000 图形样板文件 (*.dwt)
         /// </summary>
         ac2000_Template = 14,
+
         /// <summary>
         /// AutoCAD 2004 DWG (*.dwg)
         /// </summary>
         ac2004_dwg = 24,
+
         /// <summary>
         /// AutoCAD 2004 DXF (*.dxf)
         /// </summary>
         ac2004_dxf = 25,
+
         /// <summary>
         /// AutoCAD 2004 图形样板文件 (*.dwt)
         /// </summary>
         ac2004_Template = 26,
+
         /// <summary>
         /// AutoCAD 2007 DWG (*.dwg)
         /// </summary>
         ac2007_dwg = 36,
+
         /// <summary>
         /// AutoCAD 2007 DXF (*.dxf)
         /// </summary>
         ac2007_dxf = 37,
+
         /// <summary>
         /// AutoCAD 2007 图形样板文件 (*.dwt)
         /// </summary>
         ac2007_Template = 38,
+
         /// <summary>
         /// AutoCAD 2010 DWG (*.dwg)
         /// </summary>
         ac2010_dwg = 48,
+
         /// <summary>
         /// AutoCAD 2010 DXF (*.dxf)
         /// </summary>
         ac2010_dxf,
+
         /// <summary>
         /// AutoCAD 2010 图形样板文件 (*.dwt)
         /// </summary>
         ac2010_Template,
+
         /// <summary>
         /// 与当前图形版本格式相同
         /// </summary>
         acNative = 36,
+
         /// <summary>
         /// 图形类型未知或无效
         /// </summary>
@@ -168,7 +192,7 @@ namespace DotNetARX
     }
 
     /// <summary>
-    /// 指定OLE对象的打印质量 
+    /// 指定 OLE 对象的打印质量 
     /// </summary>
     public enum OleQuality
     {
@@ -176,18 +200,22 @@ namespace DotNetARX
         /// 线条
         /// </summary>
         LineArt,
+
         /// <summary>
         /// 文字
         /// </summary>
         Text,
+
         /// <summary>
         /// 图形
         /// </summary>
         Graphics,
+
         /// <summary>
         /// 照片
         /// </summary>
         Photo,
+
         /// <summary>
         /// 高质量照片
         /// </summary>
@@ -200,17 +228,18 @@ namespace DotNetARX
     public enum PlotPolicy
     {
         /// <summary>
-        /// 为新图形或早期的AutoCAD版本下的图形指定颜色相关打印样式
+        /// 为新图形或早期的 AutoCAD 版本下的图形指定颜色相关打印样式
         /// </summary>
         Legacy,
+
         /// <summary>
-        /// 为新图形或早期的AutoCAD版本下的图形指定命名打印样式
+        /// 为新图形或早期的 AutoCAD 版本下的图形指定命名打印样式
         /// </summary>
         Named
     }
 
     /// <summary>
-    /// 指定当由于I/O 端口冲突造成向设备的输出必须通过系统打印机缓冲时是否警告用户
+    /// 指定当由于 I/O 端口冲突造成向设备的输出必须通过系统打印机缓冲时是否警告用户
     /// </summary>
     public enum PrinterSpoolAlert
     {
@@ -218,14 +247,17 @@ namespace DotNetARX
         /// 始终警告并创建错误日志
         /// </summary>
         AlwaysAlert,
+
         /// <summary>
         /// 仅第一次警告但创建所有错误日志
         /// </summary>
         AlertOnce,
+
         /// <summary>
         /// 从不警告但创建所有错误日志
         /// </summary>
         NeverAlertLogOnce,
+
         /// <summary>
         /// 从不警告也从不创建任何错误日志
         /// </summary>
@@ -241,82 +273,102 @@ namespace DotNetARX
         /// 不指定（无单位）
         /// </summary>
         Unitless,
+
         /// <summary>
         /// 英寸
         /// </summary>
         Inches,
+
         /// <summary>
         /// 英尺
         /// </summary>
         Feet,
+
         /// <summary>
         /// 英里
         /// </summary>
         Miles,
+
         /// <summary>
         /// 毫米
         /// </summary>
         Millimeters,
+
         /// <summary>
         /// 厘米
         /// </summary>
         Centimeters,
+
         /// <summary>
         /// 米
         /// </summary>
         Meters,
+
         /// <summary>
         /// 公里
         /// </summary>
         Kilometers,
+
         /// <summary>
         /// 微英寸
         /// </summary>
         Microinches,
+
         /// <summary>
         /// 英里
         /// </summary>
         Mils,
+
         /// <summary>
         /// 码
         /// </summary>
         Yards,
+
         /// <summary>
         /// 埃
         /// </summary>
         Angstroms,
+
         /// <summary>
         /// 纳米
         /// </summary>
         Nanometers,
+
         /// <summary>
         /// 微米
         /// </summary>
         Microns,
+
         /// <summary>
         /// 分米
         /// </summary>
         Decimeters,
+
         /// <summary>
         /// 十米
         /// </summary>
         Decameters,
+
         /// <summary>
         /// 百米
         /// </summary>
         Hectometers,
+
         /// <summary>
         /// 百万公里
         /// </summary>
         Gigameters,
+
         /// <summary>
         /// 天文单位
         /// </summary>
         AstronomicalUnits,
+
         /// <summary>
         /// 光年
         /// </summary>
         LightYears,
+
         /// <summary>
         /// 秒差距
         /// </summary>
@@ -332,6 +384,7 @@ namespace DotNetARX
         /// 使用 AutoCAD 传统键盘设置
         /// </summary>
         PreferenceClassic,
+
         /// <summary>
         /// 使用 Windows 标准键盘设置
         /// </summary>
@@ -347,10 +400,12 @@ namespace DotNetARX
         /// 当输入坐标时，严格遵照对象捕捉模式
         /// </summary>
         RunningObjSnap,
+
         /// <summary>
         /// 当输入坐标时，严格遵照键盘输入模式
         /// </summary>
         Entry,
+
         /// <summary>
         /// 当输入坐标时，严格按照键盘输入模式。但当坐标是通过脚本输入时，遵照对象捕捉模式
         /// </summary>
@@ -366,10 +421,12 @@ namespace DotNetARX
         /// 禁用命令快捷菜单,结果为当命令期间按右键为回车
         /// </summary>
         Enter,
+
         /// <summary>
         /// 启用命令快捷菜单
         /// </summary>
         EnableSCM,
+
         /// <summary>
         /// 只在命令行提示中选项当前有效时启用命令快捷菜单。在命令行提示中，选项是在方括号[]中。如果没有有效的选项，右键为回车
         /// </summary>
@@ -385,6 +442,7 @@ namespace DotNetARX
         /// 禁用默认快捷菜单
         /// </summary>
         RepeatLastCommand,
+
         /// <summary>
         /// 启用默认快捷菜单
         /// </summary>
@@ -400,6 +458,7 @@ namespace DotNetARX
         /// 禁用编辑快捷菜单
         /// </summary>
         EdRepeatLastCommand,
+
         /// <summary>
         /// 启用编辑快捷菜单
         /// </summary>
@@ -407,13 +466,13 @@ namespace DotNetARX
     }
 
     /// <summary>
-    /// 封装COM的Preferences类，该类指定当前 AutoCAD 设置
+    /// 封装 COM 的 Preferences 类，该类指定当前 AutoCAD 设置
     /// </summary>
     public static class Preferences
     {
-        // 获取Preferences对象(COM类）
-        static Type AcadPreferences = Type.GetTypeFromHandle(Type.GetTypeHandle(Application.Preferences));  
-      
+        // 获取 Preferences 对象(COM 类）
+        static Type AcadPreferences = Type.GetTypeFromHandle(Type.GetTypeHandle(Application.Preferences));
+
         /// <summary>
         /// 获取“选项”对话框对应选项卡上选项的属性值
         /// </summary>
@@ -424,12 +483,14 @@ namespace DotNetARX
         {
             try
             {
-                // 通过后期绑定的方式调用Preferences对象的ProjectName属性
-                object obj = AcadPreferences.InvokeMember(ProjectName, BindingFlags.GetProperty, null, Application.Preferences, new object[0]);
-                // 获取ProjectName属性对应的COM类
+                // 通过后期绑定的方式调用 Preferences 对象的 ProjectName 属性
+                object obj = AcadPreferences.InvokeMember(ProjectName, BindingFlags.GetProperty, null,
+                    Application.Preferences, new object[0]);
+                // 获取 ProjectName 属性对应的 COM 类
                 Type AcadPreferencesUnknown = Type.GetTypeFromHandle(Type.GetTypeHandle(obj));
-                // 获取ProjectName属性对应的COM类的PropertyName属性
-                return (object)AcadPreferencesUnknown.InvokeMember(PropertyName, BindingFlags.GetProperty, null, obj, new object[0]);
+                // 获取 ProjectName 属性对应的 COM 类的 PropertyName 属性
+                return (object)AcadPreferencesUnknown.InvokeMember(PropertyName, BindingFlags.GetProperty, null, obj,
+                    new object[0]);
             }
             catch
             {
@@ -443,14 +504,16 @@ namespace DotNetARX
         /// <param name="ProjectName">选项卡名称</param>
         /// <param name="PropertyName">属性名称</param>
         /// <param name="Value">属性值</param>
-        /// <returns>如果属性设置成功，则返回true，否则返回false</returns>
+        /// <returns>如果属性设置成功，则返回 true，否则返回 false</returns>
         public static bool SetProperties(string ProjectName, string PropertyName, object Value)
         {
             try
             {
-                object obj = AcadPreferences.InvokeMember(ProjectName, BindingFlags.GetProperty, null, Application.Preferences, new object[0]);
+                object obj = AcadPreferences.InvokeMember(ProjectName, BindingFlags.GetProperty, null,
+                    Application.Preferences, new object[0]);
                 Type AcadPreferencesUnknown = Type.GetTypeFromHandle(Type.GetTypeHandle(obj));
-                AcadPreferencesUnknown.InvokeMember(PropertyName, BindingFlags.SetProperty, null, obj, new object[1] { Value });
+                AcadPreferencesUnknown.InvokeMember(PropertyName, BindingFlags.SetProperty, null, obj,
+                    new object[1] { Value });
                 return true;
             }
             catch
@@ -469,7 +532,11 @@ namespace DotNetARX
             /// </summary>
             public static Color AutoTrackingVecColor
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Display", "AutoTrackingVecColor"))); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Display", "AutoTrackingVecColor")));
+                }
                 set { Preferences.SetProperties("Display", "AutoTrackingVecColor", ColorTranslator.ToOle(value)); }
             }
 
@@ -523,8 +590,16 @@ namespace DotNetARX
             /// </summary>
             public static Color GraphicsWinLayoutBackgrndColor
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Display", "GraphicsWinLayoutBackgrndColor"))); }
-                set { Preferences.SetProperties("Display", "GraphicsWinLayoutBackgrndColor", ColorTranslator.ToOle(value)); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Display", "GraphicsWinLayoutBackgrndColor")));
+                }
+                set
+                {
+                    Preferences.SetProperties("Display", "GraphicsWinLayoutBackgrndColor",
+                        ColorTranslator.ToOle(value));
+                }
             }
 
             /// <summary>
@@ -532,8 +607,15 @@ namespace DotNetARX
             /// </summary>
             public static Color GraphicsWinModelBackgrndColor
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Display", "GraphicsWinModelBackgrndColor"))); }
-                set { Preferences.SetProperties("Display", "GraphicsWinModelBackgrndColor", ColorTranslator.ToOle(value)); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Display", "GraphicsWinModelBackgrndColor")));
+                }
+                set
+                {
+                    Preferences.SetProperties("Display", "GraphicsWinModelBackgrndColor", ColorTranslator.ToOle(value));
+                }
             }
 
             /// <summary>
@@ -568,7 +650,11 @@ namespace DotNetARX
             /// </summary>
             public static Color LayoutCrosshairColor
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Display", "LayoutCrosshairColor"))); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Display", "LayoutCrosshairColor")));
+                }
                 set { Preferences.SetProperties("Display", "LayoutCrosshairColor", ColorTranslator.ToOle(value)); }
             }
 
@@ -609,7 +695,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置在AutoCAD 启动时是否布满整个屏幕
+            /// 获取或设置在 AutoCAD 启动时是否布满整个屏幕
             /// </summary>
             public static bool MaxAutoCADWindow
             {
@@ -622,7 +708,11 @@ namespace DotNetARX
             /// </summary>
             public static Color ModelCrosshairColor
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Display", "ModelCrosshairColor"))); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Display", "ModelCrosshairColor")));
+                }
                 set { Preferences.SetProperties("Display", "ModelCrosshairColor", ColorTranslator.ToOle(value)); }
             }
 
@@ -667,7 +757,11 @@ namespace DotNetARX
             /// </summary>
             public static Color TextWinBackgrndColor
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Display", "TextWinBackgrndColor"))); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Display", "TextWinBackgrndColor")));
+                }
                 set { Preferences.SetProperties("Display", "TextWinBackgrndColor", ColorTranslator.ToOle(value)); }
             }
 
@@ -676,7 +770,11 @@ namespace DotNetARX
             /// </summary>
             public static Color TextWinTextColor
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Display", "TextWinTextColor"))); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Display", "TextWinTextColor")));
+                }
                 set { Preferences.SetProperties("Display", "TextWinTextColor", ColorTranslator.ToOle(value)); }
             }
 
@@ -705,7 +803,7 @@ namespace DotNetARX
         public static class Files
         {
             /// <summary>
-            /// 获取或设置AutoCAD 进程的活动配置
+            /// 获取或设置 AutoCAD 进程的活动配置
             /// </summary>
             public static string ActiveProfile
             {
@@ -776,7 +874,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置AutoCAD 查找视频显示、定点设备、打印机和绘图仪所用 ADI 设备驱动程序的目录
+            /// 获取或设置 AutoCAD 查找视频显示、定点设备、打印机和绘图仪所用 ADI 设备驱动程序的目录
             /// </summary>
             public static string DriversPath
             {
@@ -794,7 +892,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置AutoCAD 帮助文件的位置
+            /// 获取或设置 AutoCAD 帮助文件的位置
             /// </summary>
             public static string HelpFilePath
             {
@@ -848,7 +946,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置acad.psf 文件中自定义前导部分的名称
+            /// 获取或设置 acad.psf 文件中自定义前导部分的名称
             /// </summary>
             public static string PostScriptPrologFile
             {
@@ -911,7 +1009,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置QNew命令的图形样板文件的位置
+            /// 获取或设置 QNew 命令的图形样板文件的位置
             /// </summary>
             public static string QNewTemplateFile
             {
@@ -920,7 +1018,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置AutoCAD 搜索支持文件的目录
+            /// 获取或设置 AutoCAD 搜索支持文件的目录
             /// </summary>
             public static string SupportPath
             {
@@ -929,7 +1027,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置AutoCAD用于保存临时文件的目录
+            /// 获取或设置 AutoCAD 用于保存临时文件的目录
             /// </summary>
             public static string TempFilePath
             {
@@ -956,7 +1054,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置MTEXT 命令所使用文字编辑器的名称
+            /// 获取或设置 MTEXT 命令所使用文字编辑器的名称
             /// </summary>
             public static string TextEditor
             {
@@ -965,7 +1063,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置AutoCAD 搜索渲染纹理贴图的目录
+            /// 获取或设置 AutoCAD 搜索渲染纹理贴图的目录
             /// </summary>
             public static string TextureMapPath
             {
@@ -990,7 +1088,6 @@ namespace DotNetARX
                 get { return (string)Preferences.GetProperties("Files", "WorkspacePath"); }
                 set { Preferences.SetProperties("Files", "WorkspacePath", value); }
             }
-
         }
 
         /// <summary>
@@ -1003,7 +1100,11 @@ namespace DotNetARX
             /// </summary>
             public static AlignmentPointAcquisition AlignmentPointAcquisition
             {
-                get { return (AlignmentPointAcquisition)Preferences.GetProperties("Drafting", "AlignmentPointAcquisition"); }
+                get
+                {
+                    return (AlignmentPointAcquisition)Preferences.GetProperties("Drafting",
+                        "AlignmentPointAcquisition");
+                }
                 set { Preferences.SetProperties("Drafting", "AlignmentPointAcquisition", value); }
             }
 
@@ -1048,7 +1149,11 @@ namespace DotNetARX
             /// </summary>
             public static Color AutoSnapMarkerColor
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Drafting", "AutoSnapMarkerColor"))); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Drafting", "AutoSnapMarkerColor")));
+                }
                 set { Preferences.SetProperties("Drafting", "AutoSnapMarkerColor", ColorTranslator.ToOle(value)); }
             }
 
@@ -1096,7 +1201,6 @@ namespace DotNetARX
                 get { return (bool)Preferences.GetProperties("Drafting", "PolarTrackingVector"); }
                 set { Preferences.SetProperties("Drafting", "PolarTrackingVector", value); }
             }
-
         }
 
         /// <summary>
@@ -1229,7 +1333,6 @@ namespace DotNetARX
                 get { return (XRefDemandLoad)Preferences.GetProperties("OpenSave", "XRefDemandLoad"); }
                 set { Preferences.SetProperties("OpenSave", "XRefDemandLoad", value); }
             }
-
         }
 
         /// <summary>
@@ -1274,7 +1377,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置图形或用早期版本的 AutoCAD 创建且未用 AutoCAD 2000 格式保存的图形中的图层0的默认打印样式
+            /// 获取或设置图形或用早期版本的 AutoCAD 创建且未用 AutoCAD 2000 格式保存的图形中的图层 0 的默认打印样式
             /// </summary>
             public static string DefaultPlotStyleForLayer
             {
@@ -1292,7 +1395,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置OLE对象的打印质量
+            /// 获取或设置 OLE 对象的打印质量
             /// </summary>
             public static OleQuality OLEQuality
             {
@@ -1319,7 +1422,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置当布局配置的页面尺寸与PC3文件的默认设置不同时是否提醒用户
+            /// 获取或设置当布局配置的页面尺寸与 PC3 文件的默认设置不同时是否提醒用户
             /// </summary>
             public static bool PrinterPaperSizeAlert
             {
@@ -1328,7 +1431,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置当由于I/O 端口冲突造成向设备的输出必须通过系统打印机缓冲时是否警告用户
+            /// 获取或设置当由于 I/O 端口冲突造成向设备的输出必须通过系统打印机缓冲时是否警告用户
             /// </summary>
             public static PrinterSpoolAlert PrinterSpoolAlert
             {
@@ -1344,7 +1447,6 @@ namespace DotNetARX
                 get { return (bool)Preferences.GetProperties("Output", "UseLastPlotSettings"); }
                 set { Preferences.SetProperties("Output", "UseLastPlotSettings", value); }
             }
-
         }
 
         /// <summary>
@@ -1375,7 +1477,11 @@ namespace DotNetARX
             /// </summary> 
             public static Color GripColorSelected
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Selection", "GripColorSelected"))); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Selection", "GripColorSelected")));
+                }
                 set { Preferences.SetProperties("Selection", "GripColorSelected", ColorTranslator.ToOle(value)); }
             }
 
@@ -1384,7 +1490,11 @@ namespace DotNetARX
             /// </summary> 
             public static Color GripColorUnselected
             {
-                get { return ColorTranslator.FromOle(Convert.ToInt32(Preferences.GetProperties("Selection", "GripColorUnselected"))); }
+                get
+                {
+                    return ColorTranslator.FromOle(
+                        Convert.ToInt32(Preferences.GetProperties("Selection", "GripColorUnselected")));
+                }
                 set { Preferences.SetProperties("Selection", "GripColorUnselected", ColorTranslator.ToOle(value)); }
             }
 
@@ -1450,7 +1560,6 @@ namespace DotNetARX
                 get { return (bool)Preferences.GetProperties("Selection", "PickGroup"); }
                 set { Preferences.SetProperties("Selection", "PickGroup", value); }
             }
-
         }
 
         /// <summary>
@@ -1459,7 +1568,7 @@ namespace DotNetARX
         public static class System
         {
             /// <summary>
-            /// 获取或设置AutoCAD 检测到无效输入时是否音响提示
+            /// 获取或设置 AutoCAD 检测到无效输入时是否音响提示
             /// </summary>
             public static bool BeepOnError
             {
@@ -1486,7 +1595,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置acad.lsp 是在启动时加载还是每一图形均加载
+            /// 获取或设置 acad.lsp 是在启动时加载还是每一图形均加载
             /// </summary>
             public static bool LoadAcadLspInAllDocuments
             {
@@ -1520,7 +1629,6 @@ namespace DotNetARX
                 get { return (bool)Preferences.GetProperties("System", "TablesReadOnly"); }
                 set { Preferences.SetProperties("System", "TablesReadOnly", value); }
             }
-
         }
 
         /// <summary>
@@ -1529,7 +1637,7 @@ namespace DotNetARX
         public static class User
         {
             /// <summary>
-            /// 获取或设置在AutoCAD设计中心源图形未分配插入单位的对象自动使用的单位
+            /// 获取或设置在 AutoCAD 设计中心源图形未分配插入单位的对象自动使用的单位
             /// </summary>
             public static InsertUnits ADCInsertUnitsDefaultSource
             {
@@ -1538,7 +1646,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置在AutoCAD设计中心目标图形未分配插入单位的对象自动使用的单位
+            /// 获取或设置在 AutoCAD 设计中心目标图形未分配插入单位的对象自动使用的单位
             /// </summary>
             public static InsertUnits ADCInsertUnitsDefaultTarget
             {
@@ -1565,7 +1673,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置Windows 标准或 AutoCAD 传统快捷键
+            /// 获取或设置 Windows 标准或 AutoCAD 传统快捷键
             /// </summary>
             public static KeyboardAccelerator KeyboardAccelerator
             {
@@ -1574,7 +1682,7 @@ namespace DotNetARX
             }
 
             /// <summary>
-            /// 获取或设置AutoCAD 如何响应坐标数据的输入
+            /// 获取或设置 AutoCAD 如何响应坐标数据的输入
             /// </summary>
             public static KeyboardPriority KeyboardPriority
             {
@@ -1635,7 +1743,6 @@ namespace DotNetARX
                 get { return (bool)Preferences.GetProperties("User", "ShortCutMenuDisplay"); }
                 set { Preferences.SetProperties("User", "ShortCutMenuDisplay", value); }
             }
-
         }
     }
 }

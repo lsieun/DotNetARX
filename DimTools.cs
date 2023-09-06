@@ -64,12 +64,12 @@ namespace DotNetARX
         public static readonly string HalfCircle = @"{\Fgdt;" + "k}";
 
         /// <summary>
-        /// 最小实体要求（带圆圈的L）
+        /// 最小实体要求（带圆圈的 L）
         /// </summary>
         public static readonly string CircleL = @"{\Fgdt;" + "l}";
 
         /// <summary>
-        /// 最大实体要求（带圆圈的M）
+        /// 最大实体要求（带圆圈的 M）
         /// </summary>
         public static readonly string CircleM = @"{\Fgdt;" + "m}";
 
@@ -84,12 +84,12 @@ namespace DotNetARX
         public static readonly string Square = @"{\Fgdt;" + "o}";
 
         /// <summary>
-        /// 延伸公差带（带圆圈的P）
+        /// 延伸公差带（带圆圈的 P）
         /// </summary>
         public static readonly string CircleP = @"{\Fgdt;" + "p}";
 
         /// <summary>
-        /// 中心线（C和L重叠）
+        /// 中心线（C 和 L 重叠）
         /// </summary>
         public static readonly string CenterLine = @"{\Fgdt;" + "q}";
 
@@ -99,7 +99,7 @@ namespace DotNetARX
         public static readonly string TwoCircles = @"{\Fgdt;" + "r}";
 
         /// <summary>
-        /// 不考虑特征尺寸（带圆圈的S）
+        /// 不考虑特征尺寸（带圆圈的 S）
         /// </summary>
         public static readonly string CircleS = @"{\Fgdt;" + "s}";
 
@@ -170,7 +170,7 @@ namespace DotNetARX
         public static readonly string Origin = "_ORIGIN";
 
         /// <summary>
-        /// 原点标记2
+        /// 原点标记 2
         /// </summary>
         public static readonly string Origin2 = "_ORIGIN2";
 
@@ -185,7 +185,7 @@ namespace DotNetARX
         public static readonly string RightAngle = "_OPEN90";
 
         /// <summary>
-        /// 30度角
+        /// 30 度角
         /// </summary>
         public static readonly string Angle30 = "_OPEN30";
 
@@ -246,7 +246,7 @@ namespace DotNetARX
     }
 
     /// <summary>
-    /// AutoCAD自带的用于多重引线注释块的名称
+    /// AutoCAD 自带的用于多重引线注释块的名称
     /// </summary>
     public struct LeaderBlockContent
     {
@@ -293,11 +293,11 @@ namespace DotNetARX
         /// </summary>
         public static string ArrowBlock
         {
-            // 获取DIMBLK系统变量值，它表示尺寸线末端显示的箭头块
+            // 获取 DIMBLK 系统变量值，它表示尺寸线末端显示的箭头块
             get { return Application.GetSystemVariable("DIMBLK").ToString(); }
             set
             {
-                // 设置DIMBLK系统变量值
+                // 设置 DIMBLK 系统变量值
                 Application.SetSystemVariable("DIMBLK", value);
             }
         }
@@ -305,23 +305,23 @@ namespace DotNetARX
         #endregion
 
         /// <summary>
-        /// 获取与名称对应的箭头块的ObjectId
+        /// 获取与名称对应的箭头块的 ObjectId
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="arrowName">箭头名</param>
-        /// <returns>返回指定箭头块的ObjectId</returns>
+        /// <returns>返回指定箭头块的 ObjectId</returns>
         public static ObjectId GetArrowObjectId(this Database db, string arrowName)
         {
-            ObjectId arrId = ObjectId.Null; // 存储箭头符号的ObjectId
+            ObjectId arrId = ObjectId.Null; // 存储箭头符号的 ObjectId
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
                 BlockTable bt = (BlockTable)trans.GetObject(db.BlockTableId, OpenMode.ForRead);
-                // 如果图形中存在指定名称的箭头块，则获取其ObjectId
+                // 如果图形中存在指定名称的箭头块，则获取其 ObjectId
                 if (bt.Has(arrowName)) arrId = bt[arrowName];
                 trans.Commit();
             }
 
-            return arrId; // 返回箭头块的ObjectId
+            return arrId; // 返回箭头块的 ObjectId
         }
 
         /// <summary>

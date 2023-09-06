@@ -8,23 +8,23 @@ using Autodesk.AutoCAD.Runtime;
 namespace DotNetARX
 {
     /// <summary>
-    /// TypedValue列表类，简化选择集过滤器的构造
+    /// TypedValue 列表类，简化选择集过滤器的构造
     /// </summary>
     public class TypedValueList : List<TypedValue>
     {
         /// <summary>
         /// 接受可变参数的构造函数
         /// </summary>
-        /// <param name="args">TypedValue对象</param>
+        /// <param name="args">TypedValue 对象</param>
         public TypedValueList(params TypedValue[] args)
         {
             AddRange(args);
         }
 
         /// <summary>
-        /// 添加DXF组码及对应的类型
+        /// 添加 DXF 组码及对应的类型
         /// </summary>
-        /// <param name="typecode">DXF组码</param>
+        /// <param name="typecode">DXF 组码</param>
         /// <param name="value">类型</param>
         public void Add(int typecode, object value)
         {
@@ -32,18 +32,18 @@ namespace DotNetARX
         }
 
         /// <summary>
-        /// 添加DXF组码
+        /// 添加 DXF 组码
         /// </summary>
-        /// <param name="typecode">DXF组码</param>
+        /// <param name="typecode">DXF 组码</param>
         public void Add(int typecode)
         {
             base.Add(new TypedValue(typecode));
         }
 
         /// <summary>
-        /// 添加DXF组码及对应的类型
+        /// 添加 DXF 组码及对应的类型
         /// </summary>
-        /// <param name="typecode">DXF组码</param>
+        /// <param name="typecode">DXF 组码</param>
         /// <param name="value">类型</param>
         public void Add(DxfCode typecode, object value)
         {
@@ -51,16 +51,16 @@ namespace DotNetARX
         }
 
         /// <summary>
-        /// 添加DXF组码
+        /// 添加 DXF 组码
         /// </summary>
-        /// <param name="typecode">DXF组码</param>
+        /// <param name="typecode">DXF 组码</param>
         public void Add(DxfCode typecode)
         {
             base.Add(new TypedValue((int)typecode));
         }
 
         /// <summary>
-        /// 添加图元类型,DXF组码缺省为0
+        /// 添加图元类型,DXF 组码缺省为 0
         /// </summary>
         /// <param name="entityType">图元类型</param>
         public void Add(Type entityType)
@@ -69,60 +69,60 @@ namespace DotNetARX
         }
 
         /// <summary>
-        /// TypedValueList隐式转换为SelectionFilter
+        /// TypedValueList 隐式转换为 SelectionFilter
         /// </summary>
-        /// <param name="src">要转换的TypedValueList对象</param>
-        /// <returns>返回对应的SelectionFilter类对象</returns>
+        /// <param name="src">要转换的 TypedValueList 对象</param>
+        /// <returns>返回对应的 SelectionFilter 类对象</returns>
         public static implicit operator SelectionFilter(TypedValueList src)
         {
             return src != null ? new SelectionFilter(src) : null;
         }
 
         /// <summary>
-        /// TypedValueList隐式转换为ResultBuffer
+        /// TypedValueList 隐式转换为 ResultBuffer
         /// </summary>
-        /// <param name="src">要转换的TypedValueList对象</param>
-        /// <returns>返回对应的ResultBuffer对象</returns>
+        /// <param name="src">要转换的 TypedValueList 对象</param>
+        /// <returns>返回对应的 ResultBuffer 对象</returns>
         public static implicit operator ResultBuffer(TypedValueList src)
         {
             return src != null ? new ResultBuffer(src) : null;
         }
 
         /// <summary>
-        /// TypedValueList隐式转换为TypedValue数组
+        /// TypedValueList 隐式转换为 TypedValue 数组
         /// </summary>
-        /// <param name="src">要转换的TypedValueList对象</param>
-        /// <returns>返回对应的TypedValue数组</returns>
+        /// <param name="src">要转换的 TypedValueList 对象</param>
+        /// <returns>返回对应的 TypedValue 数组</returns>
         public static implicit operator TypedValue[](TypedValueList src)
         {
             return src != null ? src.ToArray() : null;
         }
 
         /// <summary>
-        /// TypedValue数组隐式转换为TypedValueList
+        /// TypedValue 数组隐式转换为 TypedValueList
         /// </summary>
-        /// <param name="src">要转换的TypedValue数组</param>
-        /// <returns>返回对应的TypedValueList</returns>
+        /// <param name="src">要转换的 TypedValue 数组</param>
+        /// <returns>返回对应的 TypedValueList</returns>
         public static implicit operator TypedValueList(TypedValue[] src)
         {
             return src != null ? new TypedValueList(src) : null;
         }
 
         /// <summary>
-        /// SelectionFilter隐式转换为TypedValueList
+        /// SelectionFilter 隐式转换为 TypedValueList
         /// </summary>
-        /// <param name="src">要转换的SelectionFilter</param>
-        /// <returns>返回对应的TypedValueList</returns>
+        /// <param name="src">要转换的 SelectionFilter</param>
+        /// <returns>返回对应的 TypedValueList</returns>
         public static implicit operator TypedValueList(SelectionFilter src)
         {
             return src != null ? new TypedValueList(src.GetFilter()) : null;
         }
 
         /// <summary>
-        /// ResultBuffer隐式转换为TypedValueList
+        /// ResultBuffer 隐式转换为 TypedValueList
         /// </summary>
-        /// <param name="src">要转换的ResultBuffer</param>
-        /// <returns>返回对应的TypedValueList</returns>
+        /// <param name="src">要转换的 ResultBuffer</param>
+        /// <returns>返回对应的 TypedValueList</returns>
         public static implicit operator TypedValueList(ResultBuffer src)
         {
             return src != null ? new TypedValueList(src.AsArray()) : null;
@@ -130,54 +130,54 @@ namespace DotNetARX
     }
 
     /// <summary>
-    /// Point3d列表类
+    /// Point3d 列表类
     /// </summary>
     public class Point3dList : List<Point3d>
     {
         /// <summary>
         /// 接受可变参数的构造函数
         /// </summary>
-        /// <param name="args">Point3d类对象</param>
+        /// <param name="args">Point3d 类对象</param>
         public Point3dList(params Point3d[] args)
         {
             AddRange(args);
         }
 
         /// <summary>
-        /// Point3dList隐式转换为Point3d数组
+        /// Point3dList 隐式转换为 Point3d 数组
         /// </summary>
-        /// <param name="src">要转换的Point3dList对象</param>
-        /// <returns>返回对应的Point3d数组</returns>
+        /// <param name="src">要转换的 Point3dList 对象</param>
+        /// <returns>返回对应的 Point3d 数组</returns>
         public static implicit operator Point3d[](Point3dList src)
         {
             return src != null ? src.ToArray() : null;
         }
 
         /// <summary>
-        /// Point3dList隐式转换为Point3dCollection
+        /// Point3dList 隐式转换为 Point3dCollection
         /// </summary>
-        /// <param name="src">要转换的Point3dList对象</param>
-        /// <returns>返回对应的Point3dCollection</returns>
+        /// <param name="src">要转换的 Point3dList 对象</param>
+        /// <returns>返回对应的 Point3dCollection</returns>
         public static implicit operator Point3dCollection(Point3dList src)
         {
             return src != null ? new Point3dCollection(src) : null;
         }
 
         /// <summary>
-        /// Point3d数组隐式转换为Point3dList
+        /// Point3d 数组隐式转换为 Point3dList
         /// </summary>
-        /// <param name="src">要转换的Point3d数组</param>
-        /// <returns>返回对应的Point3dList</returns>
+        /// <param name="src">要转换的 Point3d 数组</param>
+        /// <returns>返回对应的 Point3dList</returns>
         public static implicit operator Point3dList(Point3d[] src)
         {
             return src != null ? new Point3dList(src) : null;
         }
 
         /// <summary>
-        /// Point3dCollection隐式转换为Point3dList
+        /// Point3dCollection 隐式转换为 Point3dList
         /// </summary>
-        /// <param name="src">要转换的Point3dCollection</param>
-        /// <returns>返回对应的Point3dList</returns>
+        /// <param name="src">要转换的 Point3dCollection</param>
+        /// <returns>返回对应的 Point3dList</returns>
         public static implicit operator Point3dList(Point3dCollection src)
         {
             if (src != null)
@@ -194,54 +194,54 @@ namespace DotNetARX
     }
 
     /// <summary>
-    /// ObjectId列表
+    /// ObjectId 列表
     /// </summary>
     public class ObjectIdList : List<ObjectId>
     {
         /// <summary>
         /// 接受可变参数的构造函数
         /// </summary>
-        /// <param name="args">ObjectId对象</param>
+        /// <param name="args">ObjectId 对象</param>
         public ObjectIdList(params ObjectId[] args)
         {
             AddRange(args);
         }
 
         /// <summary>
-        /// ObjectIdList隐式转换为ObjectId数组
+        /// ObjectIdList 隐式转换为 ObjectId 数组
         /// </summary>
-        /// <param name="src">要转换的ObjectIdList对象</param>
-        /// <returns>返回对应的ObjectId数组</returns>
+        /// <param name="src">要转换的 ObjectIdList 对象</param>
+        /// <returns>返回对应的 ObjectId 数组</returns>
         public static implicit operator ObjectId[](ObjectIdList src)
         {
             return src != null ? src.ToArray() : null;
         }
 
         /// <summary>
-        /// ObjectIdList隐式转换为ObjectIdCollection
+        /// ObjectIdList 隐式转换为 ObjectIdCollection
         /// </summary>
-        /// <param name="src">要转换的ObjectIdList对象</param>
-        /// <returns>返回对应的ObjectIdCollection</returns>
+        /// <param name="src">要转换的 ObjectIdList 对象</param>
+        /// <returns>返回对应的 ObjectIdCollection</returns>
         public static implicit operator ObjectIdCollection(ObjectIdList src)
         {
             return src != null ? new ObjectIdCollection(src) : null;
         }
 
         /// <summary>
-        /// ObjectId数组隐式转换为ObjectIdList
+        /// ObjectId 数组隐式转换为 ObjectIdList
         /// </summary>
-        /// <param name="src">要转换的ObjectId数组</param>
-        /// <returns>返回对应的ObjectIdList</returns>
+        /// <param name="src">要转换的 ObjectId 数组</param>
+        /// <returns>返回对应的 ObjectIdList</returns>
         public static implicit operator ObjectIdList(ObjectId[] src)
         {
             return src != null ? new ObjectIdList(src) : null;
         }
 
         /// <summary>
-        /// ObjectIdCollection隐式转换为ObjectIdList
+        /// ObjectIdCollection 隐式转换为 ObjectIdList
         /// </summary>
-        /// <param name="src">要转换的ObjectIdCollection</param>
-        /// <returns>返回对应的ObjectIdList</returns>
+        /// <param name="src">要转换的 ObjectIdCollection</param>
+        /// <returns>返回对应的 ObjectIdList</returns>
         public static implicit operator ObjectIdList(ObjectIdCollection src)
         {
             if (src != null)
@@ -258,7 +258,7 @@ namespace DotNetARX
     }
 
     /// <summary>
-    /// Entity列表
+    /// Entity 列表
     /// </summary>
     public class EntityList : List<Entity>
     {
@@ -272,20 +272,20 @@ namespace DotNetARX
         }
 
         /// <summary>
-        /// EntityList隐式转换为Entity数组
+        /// EntityList 隐式转换为 Entity 数组
         /// </summary>
-        /// <param name="src">要转换的EntityList</param>
-        /// <returns>返回对应的Entity数组</returns>
+        /// <param name="src">要转换的 EntityList</param>
+        /// <returns>返回对应的 Entity 数组</returns>
         public static implicit operator Entity[](EntityList src)
         {
             return src != null ? src.ToArray() : null;
         }
 
         /// <summary>
-        /// Entity数组隐式转换为EntityList
+        /// Entity 数组隐式转换为 EntityList
         /// </summary>
-        /// <param name="src">要转换的Entity数组</param>
-        /// <returns>返回对应的EntityList</returns>
+        /// <param name="src">要转换的 Entity 数组</param>
+        /// <returns>返回对应的 EntityList</returns>
         public static implicit operator EntityList(Entity[] src)
         {
             return src != null ? new EntityList(src) : null;

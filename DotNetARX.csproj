@@ -32,19 +32,44 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="accoremgd">
-          <HintPath>..\..\..\software\Autodesk\AutoCAD 2014\accoremgd.dll</HintPath>
+        <Reference Include="accoremgd, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AcCoreMgd.dll</HintPath>
           <Private>False</Private>
         </Reference>
-        <Reference Include="AcCui">
-          <HintPath>..\..\..\software\Autodesk\AutoCAD 2014\AcCui.dll</HintPath>
-        </Reference>
-        <Reference Include="Acdbmgd">
-          <HintPath>..\..\..\software\Autodesk\AutoCAD 2014\acdbmgd.dll</HintPath>
+        <Reference Include="AcCui, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AcCui.dll</HintPath>
           <Private>False</Private>
         </Reference>
-        <Reference Include="Acmgd">
-          <HintPath>..\..\..\software\Autodesk\AutoCAD 2014\acmgd.dll</HintPath>
+        <Reference Include="Acdbmgd, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AcDbMgd.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="acdbmgdbrep, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\acdbmgdbrep.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="AcDx, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AcDx.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Acmgd, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AcMgd.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="AcMr, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AcMr.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="AcTcMgd, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AcTcMgd.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="AcWindows, Version=19.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AcWindows.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="AdWindows, Version=4.0.24.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>packages\AutoCAD-2014.Net.Base.1.0.0\lib\net40\AdWindows.dll</HintPath>
           <Private>False</Private>
         </Reference>
         <Reference Include="System" />
@@ -102,6 +127,9 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include=".gitignore" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

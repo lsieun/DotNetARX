@@ -18,33 +18,36 @@ namespace DotNetARX
             string scaleName, double paperUnits, double drawingUnits)
         {
             AnnotationScale scale = null; // 声明一个注释比例对象
+
             // 获取当前图形的对象比例管理器
             ObjectContextManager ocm = db.ObjectContextManager;
-            // 获取当前图形的注释比例列表，名为ACDB_ANNOTATIONSCALES
+            // 获取当前图形的注释比例列表，名为 ACDB_ANNOTATIONSCALES
             ObjectContextCollection occ = ocm.GetContextCollection("ACDB_ANNOTATIONSCALES");
-            // 如果没有名为scaleName的注释比例
+
+            // 如果没有名为 scaleName 的注释比例
             if (!occ.HasContext(scaleName))
             {
                 scale = new AnnotationScale(); // 新建一个注释比例对象
                 scale.Name = scaleName; // 注释比例名
                 scale.PaperUnits = paperUnits; // 注释比例的图纸单位
                 scale.DrawingUnits = drawingUnits; // 注释比例的图形单位
-                occ.AddContext(scale); // 将scaleName注释比例添加比例列表中                
+                occ.AddContext(scale); // 将 scaleName 注释比例添加比例列表中                
             }
 
-            return scale; // 返回scaleName注释比例对象
+            return scale; // 返回 scaleName 注释比例对象
         }
 
         /// <summary>
         /// 为实体添加指定的注释比例
         /// </summary>
-        /// <param name="entId">实体的Id</param>
+        /// <param name="entId">实体的 Id</param>
         /// <param name="scaleNames">注释比例名列表</param>
         public static void AttachScale(this ObjectId entId, params string[] scaleNames)
         {
             Database db = entId.Database;
-            // 获取entId指示的实体对象
+            // 获取 entId 指示的实体对象
             DBObject obj = entId.GetObject(OpenMode.ForRead);
+
             // 如果实体对象支持注释缩放
             if (obj.Annotative != AnnotativeStates.NotApplicable)
             {
@@ -59,21 +62,27 @@ namespace DotNetARX
                 }
                 // 其它可注释缩放的实体，使其可注释缩放
                 else if (obj.Annotative == AnnotativeStates.False)
+                {
                     obj.Annotative = AnnotativeStates.True;
+                }
 
                 obj.UpgradeOpen(); // 切换实体为写的状态以添加注释比例
                 // 获取当前图形的对象比例管理器
                 ObjectContextManager ocm = db.ObjectContextManager;
-                // 获取当前图形的注释比例列表，名为ACDB_ANNOTATIONSCALES
+                // 获取当前图形的注释比例列表，名为 ACDB_ANNOTATIONSCALES
                 ObjectContextCollection occ = ocm.GetContextCollection("ACDB_ANNOTATIONSCALES");
                 // 遍历需要设置的注释比例
                 foreach (string scaleName in scaleNames)
                 {
-                    // 获取名为scaleName的注释比例
+                    // 获取名为 scaleName 的注释比例
                     ObjectContext scale = occ.GetContext(scaleName);
-                    // 若不存在scaleName的注释比例，则结束本次循环
-                    if (scale == null) continue;
-                    // 为实体添加名为scaleName的注释比例
+                    // 若不存在 scaleName 的注释比例，则结束本次循环
+                    if (scale == null)
+                    {
+                        continue;
+                    }
+
+                    // 为实体添加名为 scaleName 的注释比例
                     ObjectContexts.AddContext(obj, scale);
                 }
 
@@ -84,7 +93,7 @@ namespace DotNetARX
         /// <summary>
         /// 获取实体拥有的所有缩放比例
         /// </summary>
-        /// <param name="entId">实体的Id</param>
+        /// <param name="entId">实体的 Id</param>
         /// <returns>返回实体的缩放比例列表</returns>
         public static List<ObjectContext> GetAllScales(this ObjectId entId)
         {
@@ -112,11 +121,11 @@ namespace DotNetARX
         /// <summary>
         /// 删除实体的缩放比例
         /// </summary>
-        /// <param name="entId">实体的Id</param>
+        /// <param name="entId">实体的 Id</param>
         /// <param name="scaleNames">缩放比例名列表</param>
         public static void RemoveScale(this ObjectId entId, params string[] scaleNames)
         {
-            // 获取entId指示的实体对象
+            // 获取 entId 指示的实体对象
             DBObject obj = entId.GetObject(OpenMode.ForRead);
             // 如果实体对象支持注释缩放
             if (obj.Annotative != AnnotativeStates.NotApplicable)
@@ -126,16 +135,16 @@ namespace DotNetARX
                 obj.UpgradeOpen(); // 切换实体为写的状态
                 // 获取当前图形的对象比例管理器
                 ObjectContextManager ocm = obj.Database.ObjectContextManager;
-                // 获取当前图形的注释比例列表，名为ACDB_ANNOTATIONSCALES
+                // 获取当前图形的注释比例列表，名为 ACDB_ANNOTATIONSCALES
                 ObjectContextCollection occ = ocm.GetContextCollection("ACDB_ANNOTATIONSCALES");
                 // 遍历需要设置的注释比例
                 foreach (string scaleName in scaleNames)
                 {
-                    // 获取名为scaleName的注释比例
+                    // 获取名为 scaleName 的注释比例
                     ObjectContext scale = occ.GetContext(scaleName);
-                    // 若不存在scaleName的注释比例，则结束本次循环
+                    // 若不存在 scaleName 的注释比例，则结束本次循环
                     if (scale == null) continue;
-                    // 删除名为scaleName的注释比例
+                    // 删除名为 scaleName 的注释比例
                     ObjectContexts.RemoveContext(obj, scale);
                 }
 

@@ -7,10 +7,10 @@ namespace DotNetARX
         /// <summary>
         /// 添加扩展记录
         /// </summary>
-        /// <param name="id">对象的Id</param>
+        /// <param name="id">对象的 Id</param>
         /// <param name="searchKey">扩展记录名称</param>
         /// <param name="values">扩展记录的内容</param>
-        /// <returns>返回添加的扩展记录的Id</returns>
+        /// <returns>返回添加的扩展记录的 Id</returns>
         public static ObjectId AddXrecord(this ObjectId id, string searchKey, TypedValueList values)
         {
             DBObject obj = id.GetObject(OpenMode.ForRead); // 打开对象
@@ -26,7 +26,10 @@ namespace DotNetARX
             DBDictionary dict = (DBDictionary)obj.ExtensionDictionary.GetObject(OpenMode.ForRead);
             // 如果扩展字典中已包含指定的扩展记录对象，则返回
             if (dict.Contains(searchKey))
+            {
                 return ObjectId.Null;
+            }
+
             Xrecord xrec = new Xrecord(); // 为对象新建一个扩展记录
             xrec.Data = values; // 指定扩展记录的内容
             dict.UpgradeOpen(); // 将扩展字典切换成写的状态
@@ -34,13 +37,13 @@ namespace DotNetARX
             ObjectId idXrec = dict.SetAt(searchKey, xrec);
             id.Database.TransactionManager.AddNewlyCreatedDBObject(xrec, true);
             dict.DowngradeOpen(); // 为了安全，将扩展字典切换成读的状态            
-            return idXrec; // 返回添加的扩展记录的的Id
+            return idXrec; // 返回添加的扩展记录的的 Id
         }
 
         /// <summary>
         /// 获取扩展记录
         /// </summary>
-        /// <param name="id">对象的Id</param>
+        /// <param name="id">对象的 Id</param>
         /// <param name="searchKey">扩展记录名称</param>
         /// <returns>返回扩展记录的内容</returns>
         public static TypedValueList GetXrecord(this ObjectId id, string searchKey)
@@ -52,7 +55,7 @@ namespace DotNetARX
             DBDictionary dict = (DBDictionary)dictId.GetObject(OpenMode.ForRead);
             // 在扩展字典中搜索指定关键字的扩展记录，如果没找到则返回
             if (!dict.Contains(searchKey)) return null;
-            // 获取扩展记录的Id
+            // 获取扩展记录的 Id
             ObjectId xrecordId = dict.GetAt(searchKey);
             // 打开扩展记录并获取扩展记录的内容
             Xrecord xrecord = (Xrecord)xrecordId.GetObject(OpenMode.ForRead);
@@ -64,10 +67,10 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库</param>
         /// <param name="searchKey">有名对象字典项的名称</param>
-        /// <returns>返回添加的有名对象字典项的Id</returns>
+        /// <returns>返回添加的有名对象字典项的 Id</returns>
         public static ObjectId AddNamedDictionary(this Database db, string searchKey)
         {
-            ObjectId id = ObjectId.Null; // 存储添加的命名字典项的Id
+            ObjectId id = ObjectId.Null; // 存储添加的命名字典项的 Id
             // 打开数据库的有名对象字典
             DBDictionary dicts = (DBDictionary)db.NamedObjectsDictionaryId.GetObject(OpenMode.ForRead);
             if (!dicts.Contains(searchKey)) // 如果不存在指定关键字的字典项
@@ -80,7 +83,7 @@ namespace DotNetARX
                 db.TransactionManager.AddNewlyCreatedDBObject(dict, true);
             }
 
-            return id; // 返回添加的字典项的Id
+            return id; // 返回添加的字典项的 Id
         }
     }
 }

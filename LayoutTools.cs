@@ -26,6 +26,7 @@ namespace DotNetARX
                     layouts.Add(layout);
                 }
             }
+
             return layouts.OrderBy(layout => layout.TabOrder).ToList();
         }
 
@@ -34,7 +35,7 @@ namespace DotNetARX
         /// </summary>
         /// <param name="layout">布局对象</param>
         /// <param name="bIncludeFirstViewport">是否将第一个视口包含在内</param>
-        /// <returns>返回所有实体的Id集合</returns>
+        /// <returns>返回所有实体的 Id 集合</returns>
         public static ObjectIdCollection GetEntsInLayout(this Layout layout, bool bIncludeFirstViewport)
         {
             ObjectIdCollection entIds = new ObjectIdCollection();
@@ -51,6 +52,7 @@ namespace DotNetARX
                     bFirstViewport = false;
                 }
                 else entIds.Add(entId);
+
                 ObjectId dictId = vp.ExtensionDictionary;
                 if (dictId.IsValid)
                 {
@@ -58,6 +60,7 @@ namespace DotNetARX
                     dict.TreatElementsAsHard = true;
                 }
             }
+
             return entIds;
         }
 
@@ -66,8 +69,8 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="name">布局名称</param>
-        /// <param name="entIds">布局中包含的所有实体的Id集合</param>
-        /// <returns>返回布局的Id</returns>
+        /// <param name="entIds">布局中包含的所有实体的 Id 集合</param>
+        /// <returns>返回布局的 Id</returns>
         public static ObjectId GetLayoutId(this Database db, string name, ref ObjectIdCollection entIds)
         {
             ObjectId layoutId = new ObjectId();
@@ -87,6 +90,7 @@ namespace DotNetARX
                     }
                 }
             }
+
             return layoutId;
         }
 
@@ -128,6 +132,7 @@ namespace DotNetARX
                                     }
                                 }
                             }
+
                             // 布局复制过来之后得到了两个视口，第一个视口与模型空间关联，第二个视口则是在正确的位置上
                             if (firstViewportId.IsValid && secondViewportId.IsValid)
                             {
@@ -140,7 +145,8 @@ namespace DotNetARX
                                 firstVP.Width = secondVP.Width;
                                 firstVP.ColorIndex = 5;
                                 Point3d midPt = GeometryTools.MidPoint(ext.MinPoint, ext.MaxPoint);
-                                firstVP.ViewCenter = new Point2d(midPt.X, midPt.Y); ;
+                                firstVP.ViewCenter = new Point2d(midPt.X, midPt.Y);
+                                ;
                                 double xScale = secondVP.Width / ((ext.MaxPoint.X - ext.MinPoint.X) * 1.1);
                                 double yScale = secondVP.Height / ((ext.MaxPoint.Y - ext.MinPoint.Y) * 1.1);
                                 firstVP.CustomScale = Math.Min(xScale, yScale);
@@ -148,6 +154,7 @@ namespace DotNetARX
                         }
                     }
                 }
+
                 trans.Commit();
             }
         }

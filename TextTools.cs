@@ -118,7 +118,7 @@ namespace DotNetARX
         public static readonly string LinePlate = @"\U+214A";
 
         /// <summary>
-        /// 下标2
+        /// 下标 2
         /// </summary>
         public static readonly string Subscript2 = @"\U+2082";
 
@@ -223,7 +223,7 @@ namespace DotNetARX
                 strs[i] = Regex.Replace(strs[i], @"\\~", "", ignoreCase);
                 // 删除换行符格式
                 strs[i] = Regex.Replace(strs[i], @"\\P", "\n", ignoreCase);
-                // 删除换行符格式(针对Shift+Enter格式)
+                // 删除换行符格式(针对 Shift+Enter 格式)
                 // strs[i] = Regex.Replace(strs[i], "\n", "", ignoreCase);
                 // 删除{}
                 strs[i] = Regex.Replace(strs[i], @"({|})", "", ignoreCase);
@@ -247,7 +247,7 @@ namespace DotNetARX
         /// <returns>返回堆叠好的文字</returns>
         public static string StackText(string text, string supText, string subText, StackType stackType, double scale)
         {
-            // 设置堆叠方式所代表的字符，用于将StackType枚举转换为对应的字符
+            // 设置堆叠方式所代表的字符，用于将 StackType 枚举转换为对应的字符
             string[] strs = new string[] { "/", "#", "^" };
 
             // 设置堆叠文字

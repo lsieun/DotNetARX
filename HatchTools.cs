@@ -94,13 +94,13 @@ namespace DotNetARX
         /// <summary>
         /// 显示填充图案选项板
         /// </summary>
-        /// <returns>如果用户选择了填充图案，则返回true，否则返回false</returns>
+        /// <returns>如果用户选择了填充图案，则返回 true，否则返回 false</returns>
         public bool ShowDialog()
         {
             IntPtr ptr; // 用户选择的
             // 显示填充图案选项板
             bool isOK = acedHatchPalletteDialog(HatchTools.CurrentPattern, ShowCustom, out ptr);
-            if (!isOK) return false; // 如果用户未选择填充图案，返回false
+            if (!isOK) return false; // 如果用户未选择填充图案，返回 false
             // 用户选择了填充图案，通过指针获得图案名称并将其置为当前名称
             pattern = HatchTools.CurrentPattern = Marshal.PtrToStringAuto(ptr);
             return true;
@@ -117,11 +117,11 @@ namespace DotNetARX
         /// </summary>
         public static string CurrentPattern
         {
-            // 获取HPNAME系统变量值，它表示默认的填充图案名
+            // 获取 HPNAME 系统变量值，它表示默认的填充图案名
             get { return Application.GetSystemVariable("HPNAME").ToString(); }
             set
             {
-                // 如果要设置的值符合填充图案名，则设置HPNAME系统变量值
+                // 如果要设置的值符合填充图案名，则设置 HPNAME 系统变量值
                 if (value.Length <= 34 && !value.Contains(" ") && !value.IsNullOrWhiteSpace() &&
                     value != CurrentPattern)
                     Application.SetSystemVariable("HPNAME", value);
@@ -164,7 +164,7 @@ namespace DotNetARX
             HatchGradientName gradientName, Color color1, Color color2,
             bool associative)
         {
-            // 设置渐变色填充的类型所代表的字符串，用于将HatchGradientName枚举转换为对应的字符串
+            // 设置渐变色填充的类型所代表的字符串，用于将 HatchGradientName 枚举转换为对应的字符串
             string[] gradientNames =
             {
                 "Linear", "Cylinder", "Invcylinder", "Spherical",
@@ -180,7 +180,7 @@ namespace DotNetARX
             // 设置渐变色填充的类型和图案名称
             hatch.SetGradient(GradientPatternType.PreDefinedGradient, gradientNames[(int)gradientName]);
 
-            // 新建两个Color类对象，分别表示渐变色填充的起始和结束颜色
+            // 新建两个 Color 类对象，分别表示渐变色填充的起始和结束颜色
             GradientColor gColor1 = new GradientColor(color1, 0);
             GradientColor gColor2 = new GradientColor(color2, 1);
 

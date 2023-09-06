@@ -23,7 +23,7 @@ namespace DotNetARX
         /// <param name="position">表格位置</param>
         /// <param name="numRows">表格行数</param>
         /// <param name="numCols">表格列数</param>
-        /// <returns>返回创建的表格的Id</returns>
+        /// <returns>返回创建的表格的 Id</returns>
         public static ObjectId CreateTable(this Database db, Point3d position, int numRows, int numCols)
         {
             ObjectId tableId;
@@ -34,7 +34,7 @@ namespace DotNetARX
                 table.SetSize(numRows, numCols);
                 // 设置表格放置的位置
                 table.Position = position;
-                // 非常重要，根据当前样式更新表格，不加此句，会导致AutoCAD崩溃
+                // 非常重要，根据当前样式更新表格，不加此句，会导致 AutoCAD 崩溃
                 table.GenerateLayout();
                 // 表格添加到模型空间
                 tableId = db.AddToModelSpace(table);
@@ -92,7 +92,7 @@ namespace DotNetARX
         /// <param name="table">表格对象</param>
         /// <param name="rowIndex">行号</param>
         /// <param name="data">文本内容</param>
-        /// <returns>如果设置成功，则返回true，否则返回false</returns>
+        /// <returns>如果设置成功，则返回 true，否则返回 false</returns>
         public static bool SetRowTextString(this Table table, int rowIndex, params string[] data)
         {
             if (data.Length > table.NumColumns) return false;
@@ -109,7 +109,7 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="styleName">表格样式的名称</param>
-        /// <returns>返回表格样式的Id</returns>
+        /// <returns>返回表格样式的 Id</returns>
         public static ObjectId AddTableStyle(this Database db, string styleName)
         {
             ObjectId styleId;
@@ -119,7 +119,7 @@ namespace DotNetARX
                 DBDictionary dict = (DBDictionary)trans.GetObject(db.TableStyleDictionaryId, OpenMode.ForRead);
                 // 判断是否存在指定的表格样式
                 if (dict.Contains(styleName))
-                    styleId = dict.GetAt(styleName); // 如果存在则返回表格样式的Id
+                    styleId = dict.GetAt(styleName); // 如果存在则返回表格样式的 Id
                 else
                 {
                     // 新建一个表格样式
@@ -133,7 +133,7 @@ namespace DotNetARX
                 }
             }
 
-            return styleId; // 返回表格样式的Id
+            return styleId; // 返回表格样式的 Id
         }
     }
 }

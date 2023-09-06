@@ -17,12 +17,12 @@ namespace DotNetARX
         /// <param name="insertionPoint">外部参照块的插入点</param>
         /// <param name="scaleFactors">外部参照块的缩放因子</param>
         /// <param name="rotation">外部参照块的旋转角度，以弧度表示</param>
-        /// <param name="isOverlay">外部参照块的类型，为true时表示覆盖，为false时表示附着</param>
+        /// <param name="isOverlay">外部参照块的类型，为 true 时表示覆盖，为 false 时表示附着</param>
         /// <returns></returns>
         public static ObjectId AttachXref(this Database db, string fileName, string blockName, Point3d insertionPoint,
             Scale3d scaleFactors, double rotation, bool isOverlay)
         {
-            ObjectId xrefId = ObjectId.Null; // 外部参照的Id
+            ObjectId xrefId = ObjectId.Null; // 外部参照的 Id
             // 选择以覆盖的方式插入外部参照
             if (isOverlay) xrefId = db.OverlayXref(fileName, blockName);
             // 选择以附着的方式插入外部参照
@@ -32,7 +32,7 @@ namespace DotNetARX
             bref.ScaleFactors = scaleFactors; // 外部参照块的缩放因子
             bref.Rotation = rotation; // 外部参照块的旋转角度
             db.AddToModelSpace(bref); // 将外部参照块添加到模型空间
-            return xrefId; // 返回外部参照的Id
+            return xrefId; // 返回外部参照的 Id
         }
     }
 }

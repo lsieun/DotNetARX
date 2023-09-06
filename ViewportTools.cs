@@ -10,10 +10,14 @@ namespace DotNetARX
     /// </summary>
     public static class ViewportTools
     {
-        [DllImport("acad.exe", CallingConvention = CallingConvention.Cdecl, EntryPoint = "?acedSetCurrentVPort@@YA?AW4ErrorStatus@Acad@@PBVAcDbViewport@@@Z")]
+        [DllImport("acad.exe", CallingConvention = CallingConvention.Cdecl,
+            EntryPoint = "?acedSetCurrentVPort@@YA?AW4ErrorStatus@Acad@@PBVAcDbViewport@@@Z")]
         extern static private int acedSetCurrentVPort(IntPtr AcDbVport);
-        [DllImport("acad.exe", CallingConvention = CallingConvention.Cdecl, EntryPoint = "?acedSetCurrentVPort@@YA?AW4ErrorStatus@Acad@@H@Z")]
+
+        [DllImport("acad.exe", CallingConvention = CallingConvention.Cdecl,
+            EntryPoint = "?acedSetCurrentVPort@@YA?AW4ErrorStatus@Acad@@H@Z")]
         extern static private int acedSetCurrentVPort(int vpnumber);
+
         /// <summary>
         /// 将视口置为当前
         /// </summary>
@@ -38,7 +42,7 @@ namespace DotNetARX
         /// 获取当前活动视口
         /// </summary>
         /// <param name="db">数据库对象</param>
-        /// <returns>返回当前活动视口的Id</returns>
+        /// <returns>返回当前活动视口的 Id</returns>
         public static ObjectId CurrentViewportTableRecordId(this Database db)
         {
             ObjectId vtrId = ObjectId.Null;

@@ -12,7 +12,7 @@ namespace DotNetARX
     public static class ViewTableTools
     {
         /// <summary>
-        /// 获取WCS到DCS的转换矩阵
+        /// 获取 WCS 到 DCS 的转换矩阵
         /// </summary>
         /// <param name="vtr">视图（ViewTableRecord）或视口（ViewportTableRecord）</param>
         /// <returns></returns>
@@ -194,7 +194,7 @@ namespace DotNetARX
         /// 根据对象的范围显示视图
         /// </summary>
         /// <param name="ed">命令行对象</param>
-        /// <param name="entId">对象的Id</param>
+        /// <param name="entId">对象的 Id</param>
         public static void ZoomObject(this Editor ed, ObjectId entId)
         {
             Database db = ed.Document.Database;

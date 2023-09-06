@@ -15,7 +15,7 @@ namespace DotNetARX
             Track = 130,
 
             /// <summary>
-            /// Z字型
+            /// Z 字型
             /// </summary>
             Zig,
 
@@ -30,7 +30,7 @@ namespace DotNetARX
             Circle,
 
             /// <summary>
-            /// S型
+            /// S 型
             /// </summary>
             Bat
         }
@@ -40,12 +40,12 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="typeName">线型名</param>
-        /// <returns>返回新建线型的Id</returns>
+        /// <returns>返回新建线型的 Id</returns>
         public static ObjectId AddLineType(this Database db, string typeName)
         {
             // 打开线型表
             LinetypeTable table = (LinetypeTable)db.LinetypeTableId.GetObject(OpenMode.ForRead);
-            if (!table.Has(typeName)) // 如果存在名为typeName的线型表记录
+            if (!table.Has(typeName)) // 如果存在名为 typeName 的线型表记录
             {
                 table.UpgradeOpen(); // 切换线型表为写
 
@@ -60,7 +60,7 @@ namespace DotNetARX
                 table.DowngradeOpen();
             }
 
-            return table[typeName]; // 返回新添加的线型表记录的ObjectId
+            return table[typeName]; // 返回新添加的线型表记录的 ObjectId
         }
 
         /// <summary>
@@ -68,18 +68,18 @@ namespace DotNetARX
         /// </summary>
         /// <param name="db">数据库对象</param>
         /// <param name="typeName">线型名</param>
-        /// <returns>返回装载的线型的Id</returns>
+        /// <returns>返回装载的线型的 Id</returns>
         public static ObjectId LoadLineType(this Database db, string typeName)
         {
             // 打开线型表
             LinetypeTable table = (LinetypeTable)db.LinetypeTableId.GetObject(OpenMode.ForRead);
-            if (!table.Has(typeName)) // 如果不存在名为typeName的线型
+            if (!table.Has(typeName)) // 如果不存在名为 typeName 的线型
             {
                 // 加载 typeName 线型
                 db.LoadLineTypeFile(typeName, "acad.lin");
             }
 
-            return table[typeName]; // 返回加载的线型的ObjectId
+            return table[typeName]; // 返回加载的线型的 ObjectId
         }
 
         /// <summary>
