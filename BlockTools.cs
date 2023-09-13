@@ -105,27 +105,29 @@ namespace DotNetARX
                 return ObjectId.Null;
             }
 
-            // 创建一个块参照并设置插入点
-            BlockReference br = new BlockReference(position, table[blockName]);
-            br.ScaleFactors = scale; // 设置块参照的缩放比例
-            br.Layer = layer; // 设置块参照的层名
-            br.Rotation = rotateAngle; // 设置块参照的旋转角度
+            ObjectId blockDefId = table[blockName]; // 获取块表记录的 Id
 
-            ObjectId recordId = table[blockName]; // 获取块表记录的 Id
+            // 创建一个块参照并设置插入点
+            BlockReference blockRef = new BlockReference(position, blockDefId);
+            blockRef.ScaleFactors = scale; // 设置块参照的缩放比例
+            blockRef.Layer = layer; // 设置块参照的层名
+            blockRef.Rotation = rotateAngle; // 设置块参照的旋转角度
+
+
             // 打开块表记录
-            BlockTableRecord record = (BlockTableRecord)recordId.GetObject(OpenMode.ForRead);
+            BlockTableRecord blockDef = (BlockTableRecord)blockDefId.GetObject(OpenMode.ForRead);
             // 添加可缩放性支持
-            if (record.Annotative == AnnotativeStates.True)
+            if (blockDef.Annotative == AnnotativeStates.True)
             {
                 ObjectContextCollection contextCollection =
                     db.ObjectContextManager.GetContextCollection("ACDB_ANNOTATIONSCALES");
-                ObjectContexts.AddContext(br, contextCollection.GetContext("1:1"));
+                ObjectContexts.AddContext(blockRef, contextCollection.GetContext("1:1"));
             }
 
             // 以写的方式打开空间（模型空间或图纸空间）
             BlockTableRecord space = (BlockTableRecord)spaceId.GetObject(OpenMode.ForWrite);
-            ObjectId blockRefId = space.AppendEntity(br); // 在空间中加入创建的块参照
-            db.TransactionManager.AddNewlyCreatedDBObject(br, true); // 通知事务处理加入创建的块参照
+            ObjectId blockRefId = space.AppendEntity(blockRef); // 在空间中加入创建的块参照
+            db.TransactionManager.AddNewlyCreatedDBObject(blockRef, true); // 通知事务处理加入创建的块参照
             space.DowngradeOpen(); // 为了安全，将块表状态改为读
             return blockRefId; // 返回添加的块参照的 Id
         }
@@ -156,25 +158,25 @@ namespace DotNetARX
             }
 
 
-            ObjectId recordId = table[blockName]; // 获取块表记录的 Id
+            ObjectId blockDefId = table[blockName]; // 获取块表记录的 Id
             // 打开块表记录
-            BlockTableRecord record = (BlockTableRecord)recordId.GetObject(OpenMode.ForRead);
+            BlockTableRecord blockDef = (BlockTableRecord)blockDefId.GetObject(OpenMode.ForRead);
 
             // 创建一个块参照并设置插入点
-            BlockReference br = new BlockReference(position, table[blockName]);
-            br.ScaleFactors = scale; // 设置块参照的缩放比例
-            br.Layer = layer; // 设置块参照的层名
-            br.Rotation = rotateAngle; // 设置块参照的旋转角度
+            BlockReference blockRef = new BlockReference(position, blockDefId);
+            blockRef.ScaleFactors = scale; // 设置块参照的缩放比例
+            blockRef.Layer = layer; // 设置块参照的层名
+            blockRef.Rotation = rotateAngle; // 设置块参照的旋转角度
 
             // 以写的方式打开空间（模型空间或图纸空间）
             BlockTableRecord space = (BlockTableRecord)spaceId.GetObject(OpenMode.ForWrite);
-            space.AppendEntity(br); // 为了安全，将块表状态改为读 
+            space.AppendEntity(blockRef); // 为了安全，将块表状态改为读 
 
             // 判断块表记录是否包含属性定义
-            if (record.HasAttributeDefinitions)
+            if (blockDef.HasAttributeDefinitions)
             {
                 // 若包含属性定义，则遍历属性定义
-                foreach (ObjectId id in record)
+                foreach (ObjectId id in blockDef)
                 {
                     // 检查是否是属性定义
                     AttributeDefinition attDef = id.GetObject(OpenMode.ForRead) as AttributeDefinition;
@@ -183,9 +185,9 @@ namespace DotNetARX
                         // 创建一个新的属性对象
                         AttributeReference attribute = new AttributeReference();
                         // 从属性定义获得属性对象的对象特性
-                        attribute.SetAttributeFromBlock(attDef, br.BlockTransform);
+                        attribute.SetAttributeFromBlock(attDef, blockRef.BlockTransform);
                         // 设置属性对象的其它特性
-                        attribute.Position = attDef.Position.TransformBy(br.BlockTransform);
+                        attribute.Position = attDef.Position.TransformBy(blockRef.BlockTransform);
                         attribute.Rotation = attDef.Rotation;
                         attribute.AdjustAlignment(db);
                         // 判断是否包含指定的属性名称
@@ -196,14 +198,14 @@ namespace DotNetARX
                         }
 
                         // 向块参照添加属性对象
-                        br.AttributeCollection.AppendAttribute(attribute);
+                        blockRef.AttributeCollection.AppendAttribute(attribute);
                         db.TransactionManager.AddNewlyCreatedDBObject(attribute, true);
                     }
                 }
             }
 
-            db.TransactionManager.AddNewlyCreatedDBObject(br, true);
-            return br.ObjectId; // 返回添加的块参照的 Id
+            db.TransactionManager.AddNewlyCreatedDBObject(blockRef, true);
+            return blockRef.ObjectId; // 返回添加的块参照的 Id
         }
 
         /// <summary>
@@ -242,7 +244,6 @@ namespace DotNetARX
         /// <returns>返回块参照的属性名和属性值</returns>
         public static SortedDictionary<string, string> GetAttributesInBlock(this Database db, string blockName)
         {
-            SortedDictionary<string, string> attributes = new SortedDictionary<string, string>();
             // 筛选指定名称的块参照
             TypedValue[] values =
             {
@@ -250,10 +251,16 @@ namespace DotNetARX
                 new TypedValue((int)DxfCode.BlockName, blockName),
             };
             var filter = new SelectionFilter(values);
+
             Editor ed = Application.DocumentManager.GetDocument(db).Editor;
             var entSelected = ed.SelectAll(filter);
             // 如果数据库不存在指定名称的块参照，则返回
-            if (entSelected.Status != PromptStatus.OK) return null;
+            if (entSelected.Status != PromptStatus.OK)
+            {
+                return null;
+            }
+
+            SortedDictionary<string, string> attributes = new SortedDictionary<string, string>();
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
                 // 遍历块参照
@@ -491,17 +498,19 @@ namespace DotNetARX
         /// <param name="atts">要加入的块属性列表</param>
         public static void AddAttsToBlock(this ObjectId blockId, List<AttributeDefinition> atts)
         {
-            Database db = blockId.Database; // 获取数据库对象
+            // 获取数据库对象
+            Database db = blockId.Database;
+
             // 打开块表记录为写的状态
-            BlockTableRecord record = (BlockTableRecord)blockId.GetObject(OpenMode.ForWrite);
+            BlockTableRecord block = (BlockTableRecord)blockId.GetObject(OpenMode.ForWrite);
             // 遍历属性定义对象列表
             foreach (AttributeDefinition att in atts)
             {
-                record.AppendEntity(att); // 为块表记录添加属性
+                block.AppendEntity(att); // 为块表记录添加属性
                 db.TransactionManager.AddNewlyCreatedDBObject(att, true); // 通知事务处理
             }
 
-            record.DowngradeOpen(); // 为了安全，将块表记录的状态改为读
+            block.DowngradeOpen(); // 为了安全，将块表记录的状态改为读
         }
 
         /// <summary>
